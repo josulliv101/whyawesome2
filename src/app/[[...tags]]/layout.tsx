@@ -1,0 +1,223 @@
+import { Button } from "@/components/ui/button";
+import { ServerSideComponentProp } from "@/lib/types";
+import { PropsWithChildren } from "react";
+import {
+  Calculator,
+  Calendar,
+  CreditCard,
+  Settings,
+  Smile,
+  User,
+} from "lucide-react";
+import {
+  Menubar,
+  MenubarCheckboxItem,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command";
+import { Logo } from "@/components/Logo";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+
+import Link from "next/link";
+import { Sidebar } from "@/components/Sidebar";
+
+const defaultLayout = [265, 440, 655];
+
+export default function TagsLayout({
+  children,
+  params: { tags = [] },
+}: PropsWithChildren<{ params: { tags?: string[] } }>) {
+  const [hub, tagPrimary, ...tagsParam] = tags;
+  return (
+    <div>
+      <div className="flex justify-between items-center w-full border-b px-2">
+        <div className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2">
+            <Logo />
+            <span className="font-semibold">why awesome</span>
+          </Link>
+
+          {hub && (
+            <>
+              <span className="">/</span>
+              <Link href={`/${hub}`}> {hub}</Link>
+            </>
+          )}
+        </div>
+
+        <Menubar className="border-0">
+          <MenubarMenu>
+            <MenubarTrigger>Cities</MenubarTrigger>
+            <MenubarContent>
+              <MenubarRadioGroup value={hub}>
+                <MenubarRadioItem value="boston">Boston</MenubarRadioItem>
+                <MenubarRadioItem value="chicago">Chicago</MenubarRadioItem>
+                <MenubarRadioItem value="new-york-city">
+                  New York City
+                </MenubarRadioItem>
+              </MenubarRadioGroup>
+              {/* <MenubarSeparator />
+            <MenubarItem inset>Edit...</MenubarItem> */}
+              <MenubarSeparator />
+              <MenubarItem inset>Suggest a city...</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+          <MenubarMenu>
+            <MenubarTrigger>About</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>
+                Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+              </MenubarItem>
+              <MenubarItem>
+                Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarSub>
+                <MenubarSubTrigger>Find</MenubarSubTrigger>
+                <MenubarSubContent>
+                  <MenubarItem>Search the web</MenubarItem>
+                  <MenubarSeparator />
+                  <MenubarItem>Find...</MenubarItem>
+                  <MenubarItem>Find Next</MenubarItem>
+                  <MenubarItem>Find Previous</MenubarItem>
+                </MenubarSubContent>
+              </MenubarSub>
+              <MenubarSeparator />
+              <MenubarItem>Cut</MenubarItem>
+              <MenubarItem>Copy</MenubarItem>
+              <MenubarItem>Paste</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+          <MenubarMenu>
+            <MenubarTrigger>Explore</MenubarTrigger>
+            <MenubarContent>
+              <Command className="min-w-md w-[300px]">
+                <CommandInput placeholder="Type a command or search..." />
+                <CommandList>
+                  <CommandEmpty>No results found.</CommandEmpty>
+                  <CommandGroup heading="Cities">
+                    <CommandItem>
+                      <Calendar className="mr-2 h-4 w-4" />
+                      <span>Boston</span>
+                    </CommandItem>
+                    <CommandItem>
+                      <Smile className="mr-2 h-4 w-4" />
+                      <span>Chicago</span>
+                    </CommandItem>
+                    <CommandItem>
+                      <Calculator className="mr-2 h-4 w-4" />
+                      <span>New York City</span>
+                    </CommandItem>
+                  </CommandGroup>
+                  <CommandSeparator />
+                  <CommandGroup heading="Settings">
+                    <CommandItem>
+                      <User className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                      <CommandShortcut>⌘P</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                      <CreditCard className="mr-2 h-4 w-4" />
+                      <span>Billing</span>
+                      <CommandShortcut>⌘B</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                      <CommandShortcut>⌘S</CommandShortcut>
+                    </CommandItem>
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+      </div>
+
+      <main className="flex min-h-screen flex-col items-start justify-between">
+        <ResizablePanelGroup
+          direction="horizontal"
+          // onLayout={(sizes: number[]) => {
+          //   document.cookie = `react-resizable-panels:layout=${JSON.stringify(
+          //     sizes
+          //   )}`;
+          // }}
+          className="h-full max-h-[800px] items-stretch"
+        >
+          <ResizablePanel
+            defaultSize={defaultLayout[0]}
+            // collapsedSize={navCollapsedSize}
+            collapsible={false}
+            minSize={16}
+            maxSize={36}
+            // onCollapse={(collapsed) => {
+            //   setIsCollapsed(collapsed);
+            //   document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
+            //     collapsed
+            //   )}`;
+            // }}
+            // className={cn(
+            //   isCollapsed &&
+            //     "min-w-[50px] transition-all duration-300 ease-in-out"
+            // )}
+          >
+            <Sidebar hub={hub} playlists={[]} />
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel defaultSize={defaultLayout[2]}>
+            <div className="flex items-center justify-between px-12 py-8">
+              <div className="space-y-1">
+                <Tabs
+                  value={tagPrimary ? tagPrimary : "people"}
+                  className="h-full space-y-6 mb-10"
+                >
+                  <div className="space-between flex items-center">
+                    <TabsList>
+                      <TabsTrigger value="people">
+                        <Link href={`/${hub}/people`} className="relative">
+                          People
+                        </Link>
+                      </TabsTrigger>
+                      <TabsTrigger value="places">
+                        <Link href={`/${hub}/places`} className="relative">
+                          Places
+                        </Link>
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+                </Tabs>
+                {children}
+              </div>
+            </div>
+            <Separator className="my-4" />
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </main>
+    </div>
+  );
+}
