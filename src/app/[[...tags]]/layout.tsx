@@ -52,7 +52,7 @@ export default function TagsLayout({
   children,
   params: { tags = [] },
 }: PropsWithChildren<{ params: { tags?: string[] } }>) {
-  const [hub, tagPrimary, ...tagsParam] = tags;
+  const [hub = "all", tagPrimary = "person", ...tagsParam] = tags;
   return (
     <div>
       <div className="flex justify-between items-center w-full border-b px-2">
@@ -65,7 +65,7 @@ export default function TagsLayout({
           {hub && (
             <>
               <span className="">/</span>
-              <Link href={`/${hub}`}> {hub}</Link>
+              <Link href={`/${hub}/${tagPrimary}`}> {hub}</Link>
             </>
           )}
         </div>
@@ -159,64 +159,33 @@ export default function TagsLayout({
         </Menubar>
       </div>
 
-      <main className="flex min-h-screen flex-col items-start justify-between">
-        <ResizablePanelGroup
-          direction="horizontal"
-          // onLayout={(sizes: number[]) => {
-          //   document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-          //     sizes
-          //   )}`;
-          // }}
-          className="h-full max-h-[800px] items-stretch"
-        >
-          <ResizablePanel
-            defaultSize={defaultLayout[0]}
-            // collapsedSize={navCollapsedSize}
-            collapsible={false}
-            minSize={16}
-            maxSize={36}
-            // onCollapse={(collapsed) => {
-            //   setIsCollapsed(collapsed);
-            //   document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(
-            //     collapsed
-            //   )}`;
-            // }}
-            // className={cn(
-            //   isCollapsed &&
-            //     "min-w-[50px] transition-all duration-300 ease-in-out"
-            // )}
-          >
-            <Sidebar hub={hub} playlists={[]} />
-          </ResizablePanel>
-          <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={defaultLayout[2]}>
-            <div className="flex items-center justify-between px-12 py-8">
-              <div className="space-y-1">
-                <Tabs
-                  value={tagPrimary ? tagPrimary : "people"}
-                  className="h-full space-y-6 mb-10"
-                >
-                  <div className="space-between flex items-center">
-                    <TabsList>
-                      <TabsTrigger value="people">
-                        <Link href={`/${hub}/people`} className="relative">
-                          People
-                        </Link>
-                      </TabsTrigger>
-                      <TabsTrigger value="places">
-                        <Link href={`/${hub}/places`} className="relative">
-                          Places
-                        </Link>
-                      </TabsTrigger>
-                    </TabsList>
-                  </div>
-                </Tabs>
-                {children}
+      <main className="flex min-h-screen items-start justify-stretch">
+        <Sidebar className="lg:w-2/12" hub={hub} tagPrimary={tagPrimary} />
+
+        <div className="lg:w-10/12 px-12 py-8 bg-gray-50">
+          <div className="">
+            <Tabs
+              value={tagPrimary ? tagPrimary : "person"}
+              className="h-full space-y-6 mb-10"
+            >
+              <div className="space-between flex items-center">
+                <TabsList>
+                  <TabsTrigger value="person">
+                    <Link href={`/${hub}/person`} className="relative">
+                      People
+                    </Link>
+                  </TabsTrigger>
+                  <TabsTrigger value="place">
+                    <Link href={`/${hub}/place`} className="relative">
+                      Places
+                    </Link>
+                  </TabsTrigger>
+                </TabsList>
               </div>
-            </div>
-            <Separator className="my-4" />
-          </ResizablePanel>
-        </ResizablePanelGroup>
+            </Tabs>
+            {children}
+          </div>
+        </div>
       </main>
     </div>
   );
