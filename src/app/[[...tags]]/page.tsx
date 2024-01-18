@@ -19,7 +19,7 @@ export default async function Page({
 }: ServerSideComponentProp<{ tags?: string[] }>) {
   const [hub, tagPrimary = "person", ...tagsParam] = tags;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== "all");
-  await new Promise((r) => setTimeout(r, 3000));
+  await new Promise((r) => setTimeout(r, 0));
   const ps = [
     fetchEntities(tagsBase.concat("comedian"), 8),
     fetchEntities(tagsBase.concat("musician"), 8),
