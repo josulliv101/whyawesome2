@@ -2,14 +2,20 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-import { ServerSideComponentProp, TagName } from "@/lib/types";
+import {
+  ServerSideComponentProp,
+  TagDefinition,
+  TagName,
+  tagDefinitionList,
+  tagDefinitionMap,
+} from "@/lib/types";
 import Link from "next/link";
 import { Sidebar } from "@/components/Sidebar";
 import { Badge } from "@/components/ui/badge";
 import { fetchEntities } from "@/lib/firebase";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { tagDefinitions } from "@/lib/tags";
+// import { tagDefinitions } from "@/lib/tags";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const defaultLayout = [265, 440, 655];
@@ -30,19 +36,11 @@ export default async function Page({
   return (
     <>
       <h2 className="flex items-center text-4xl font-semibold tracking-tight mb-1">
-        Discover why {tagDefinitions[tagPrimary as TagName].plural} are awesome
-        {hub ? (
-          <>
-            {" "}
-            in <Badge className="ml-3 text-lg px-3 py-2">{hub}</Badge>
-          </>
-        ) : (
-          "."
-        )}
+        Discover why {tagDefinitionMap[tagPrimary as TagName].plural} are
+        awesome.
       </h2>
       <p className="text-lg text-muted-foreground mb-12">
-        Inclusion in the <em>why awesome</em> catalog is currently by invitation
-        only.
+        Inclusion in <>#whyawesome</> is currently by invitation only.
       </p>
 
       <div className="">
@@ -60,6 +58,7 @@ export default async function Page({
                     className="aspect-[3/4] h-fit w-fit object-cover"
                     width={150}
                     height={200}
+                    priority
                   />
                 </div>
                 <figcaption className="pt-2 text-xs text-muted-foreground">
@@ -86,6 +85,7 @@ export default async function Page({
                     className="aspect-[3/4] h-fit w-fit object-cover"
                     width={150}
                     height={200}
+                    priority
                   />
                 </div>
                 <figcaption className="pt-2 text-xs text-muted-foreground">

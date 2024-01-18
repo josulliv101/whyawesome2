@@ -53,16 +53,17 @@ export default function TagsLayout({
   params: { tags = [] },
 }: PropsWithChildren<{ params: { tags?: string[] } }>) {
   const [hub = "all", tagPrimary = "person", ...tagsParam] = tags;
+  console.log("LAYOUT", tags);
   return (
     <div>
-      <div className="flex justify-between items-center w-full border-b px-2">
+      <div className="flex justify-between items-center w-full border-b px-6">
         <div className="flex items-center space-x-2">
-          <Link href="/" className="flex items-center space-x-2">
-            <Logo />
-            <span className="font-semibold">why awesome</span>
+          <Link href="/" className="flex items-center space-x-1">
+            {/* <Logo /> */}
+            <span className="font-normal">#whyawesome</span>
           </Link>
 
-          {hub && (
+          {false && hub && (
             <>
               <span className="">/</span>
               <Link href={`/${hub}/${tagPrimary}`}>
@@ -72,7 +73,6 @@ export default function TagsLayout({
             </>
           )}
         </div>
-
         <Menubar className="border-0">
           <MenubarMenu>
             <MenubarTrigger>Cities</MenubarTrigger>
@@ -85,7 +85,7 @@ export default function TagsLayout({
                 </MenubarRadioItem>
               </MenubarRadioGroup>
               {/* <MenubarSeparator />
-            <MenubarItem inset>Edit...</MenubarItem> */}
+      <MenubarItem inset>Edit...</MenubarItem> */}
               <MenubarSeparator />
               <MenubarItem inset>Suggest a city...</MenubarItem>
             </MenubarContent>
@@ -161,7 +161,6 @@ export default function TagsLayout({
           </MenubarMenu>
         </Menubar>
       </div>
-
       <main className="flex min-h-screen items-start justify-stretch">
         <Sidebar className="lg:w-2/12" hub={hub} tagPrimary={tagPrimary} />
 
