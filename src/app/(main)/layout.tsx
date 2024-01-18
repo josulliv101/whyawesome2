@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { ServerSideComponentProp } from "@/lib/types";
 import { PropsWithChildren } from "react";
 import {
@@ -58,9 +59,15 @@ export default function TagsLayout({
     <div>
       <div className="flex justify-between items-center w-full border-b px-6">
         <div className="flex items-center space-x-2">
-          <Link href="/" className="flex items-center space-x-1">
+          <Link href="/" className="flex items-center space-x-2">
             {/* <Logo /> */}
-            <span className="font-normal">#whyawesome</span>
+            <Image
+              alt="whyawesome logo"
+              width="24"
+              height="24"
+              src="/cute-mushroom.png"
+            />
+            <span className="font-normal">whyawesome</span>
           </Link>
 
           {false && hub && (

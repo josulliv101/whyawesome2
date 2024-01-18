@@ -11,11 +11,11 @@ export default function Loading() {
       {[...new Array(2)].map((_, i) => (
         <div key={i} className="">
           <Skeleton className="h-6 w-[140px] mt-14" />
-          <div className="flex items-center justify-start bg-gray-100 rounded-sm pl-4 py-4 mt-6">
+          <div className="flex items-center justify-start border border-gray-100 rounded-sm pl-4 py-4 mt-6">
             {[...Array(4)].map((_, j) => (
               <Skeleton
                 key={j}
-                className="h-[270px] w-[210px]  mr-4 overflow-auto px-2 bg-gray-50/70"
+                className="h-[270px] w-[210px]  mr-4 overflow-auto px-2"
               />
             ))}
           </div>

@@ -25,7 +25,7 @@ export default async function Page({
 }: ServerSideComponentProp<{ tags?: string[] }>) {
   const [hub, tagPrimary = "person", ...tagsParam] = tags;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== "all");
-  await new Promise((r) => setTimeout(r, 0));
+  await new Promise((r) => setTimeout(r, 3000));
   const ps = [
     fetchEntities(tagsBase.concat("comedian"), 8),
     fetchEntities(tagsBase.concat("musician"), 8),
@@ -49,20 +49,30 @@ export default async function Page({
         </h2>
         <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
           <div className="flex w-max space-x-4 p-4">
-            {comedians.map((artwork) => (
+            {comedians.map((artwork, index) => (
               <figure key={artwork.id} className="shrink-0">
-                <div className="overflow-hidden rounded-md">
+                <div className="relative overflow-hidden rounded-md">
                   <Image
                     src={artwork.pic}
                     alt={`Photo by ${artwork.name}`}
                     className="aspect-[3/4] h-fit w-fit object-cover"
                     width={150}
                     height={200}
-                    priority
+                    priority={index < 6}
                   />
                 </div>
-                <figcaption className="pt-2 text-xs text-muted-foreground">
+                <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                   <span className="text-foreground">{artwork.name}</span>
+                  <Badge className="" variant={"outline"}>
+                    {artwork.oinks}
+                    <Image
+                      alt="whyawesome logo"
+                      width="16"
+                      height="16"
+                      src="/cute-mushroom.png"
+                      className="ml-1"
+                    />
+                  </Badge>
                 </figcaption>
               </figure>
             ))}
@@ -88,8 +98,18 @@ export default async function Page({
                     priority
                   />
                 </div>
-                <figcaption className="pt-2 text-xs text-muted-foreground">
+                <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                   <span className="text-foreground">{artwork.name}</span>
+                  <Badge className="" variant={"outline"}>
+                    {artwork.oinks}
+                    <Image
+                      alt="whyawesome logo"
+                      width="16"
+                      height="16"
+                      src="/cute-mushroom.png"
+                      className="ml-1"
+                    />
+                  </Badge>
                 </figcaption>
               </figure>
             ))}
@@ -112,8 +132,18 @@ export default async function Page({
                     height={200}
                   />
                 </div>
-                <figcaption className="pt-2 text-xs text-muted-foreground">
+                <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                   <span className="text-foreground">{artwork.name}</span>
+                  <Badge className="" variant={"outline"}>
+                    {artwork.oinks}
+                    <Image
+                      alt="whyawesome logo"
+                      width="16"
+                      height="16"
+                      src="/cute-mushroom.png"
+                      className="ml-1"
+                    />
+                  </Badge>
                 </figcaption>
               </figure>
             ))}
