@@ -40,8 +40,8 @@ export default async function Page({
         awesome.
       </h2>
       <p className="text-lg text-muted-foreground mb-12">
-        Inclusion in <>whyaweso.me's catalog</> is currently by invitation only
-        - everyone can vote on why things are awesome.
+        Inclusion in the whyaweso.me catalog is currently by invitation only,
+        everyone can vote on why things are awesome.
       </p>
 
       <div className="">
