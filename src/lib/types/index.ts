@@ -201,6 +201,7 @@ export const tagDefinitionList = [
   { id: "romance", plural: "" },
   { id: "suspense", plural: "" },
   { id: "museum", plural: "museums" },
+  { id: "nature" },
   { id: "college", plural: "colleges" },
   { id: "bar", plural: "bars" },
   { id: "library", plural: "libraries" },

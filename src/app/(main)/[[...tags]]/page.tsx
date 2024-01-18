@@ -40,7 +40,8 @@ export default async function Page({
         awesome.
       </h2>
       <p className="text-lg text-muted-foreground mb-12">
-        Inclusion in <>#whyawesome</> is currently by invitation only.
+        Inclusion in <>whyaweso.me's catalog</> is currently by invitation only
+        &mdash; everyone can vote on why things are awesome.
       </p>
 
       <div className="">

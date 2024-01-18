@@ -67,7 +67,7 @@ export default function TagsLayout({
               height="24"
               src="/cute-mushroom.png"
             />
-            <span className="font-normal">whyawesome</span>
+            <span className="font-normal">whyaweso.me</span>
           </Link>
 
           {false && hub && (
