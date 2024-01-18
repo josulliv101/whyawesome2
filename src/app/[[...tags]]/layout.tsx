@@ -65,7 +65,10 @@ export default function TagsLayout({
           {hub && (
             <>
               <span className="">/</span>
-              <Link href={`/${hub}/${tagPrimary}`}> {hub}</Link>
+              <Link href={`/${hub}/${tagPrimary}`}>
+                {" "}
+                {hub} / {tagPrimary}
+              </Link>
             </>
           )}
         </div>
@@ -162,7 +165,7 @@ export default function TagsLayout({
       <main className="flex min-h-screen items-start justify-stretch">
         <Sidebar className="lg:w-2/12" hub={hub} tagPrimary={tagPrimary} />
 
-        <div className="lg:w-10/12 px-12 py-8 bg-gray-50">
+        <div className="lg:w-10/12 px-12 py-8 ">
           <div className="">
             <Tabs
               value={tagPrimary ? tagPrimary : "person"}

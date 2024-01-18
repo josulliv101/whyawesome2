@@ -10,6 +10,7 @@ import { fetchEntities } from "@/lib/firebase";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { tagDefinitions } from "@/lib/tags";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const defaultLayout = [265, 440, 655];
 
@@ -18,21 +19,22 @@ export default async function Page({
 }: ServerSideComponentProp<{ tags?: string[] }>) {
   const [hub, tagPrimary = "person", ...tagsParam] = tags;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== "all");
+  await new Promise((r) => setTimeout(r, 3000));
   const ps = [
     fetchEntities(tagsBase.concat("comedian"), 8),
     fetchEntities(tagsBase.concat("musician"), 8),
     fetchEntities(tagsBase.concat("sports"), 8),
   ];
-
+  // <Skeleton className="h-12 w-12 rounded-full" />
   const [[comedians, count], [musicians], [sports]] = await Promise.all(ps);
   return (
     <>
-      <h2 className="text-4xl font-semibold tracking-tight mb-1">
+      <h2 className="flex items-center text-4xl font-semibold tracking-tight mb-1">
         Discover why {tagDefinitions[tagPrimary as TagName].plural} are awesome
         {hub ? (
           <>
             {" "}
-            in <Button>{hub}</Button>
+            in <Badge className="ml-3 text-lg px-3 py-2">{hub}</Badge>
           </>
         ) : (
           "."
