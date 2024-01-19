@@ -25,7 +25,7 @@ export default async function Page({
 }: ServerSideComponentProp<{ tags?: string[] }>) {
   const [hub, tagPrimary = "person", ...tagsParam] = tags;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== "all");
-  await new Promise((r) => setTimeout(r, 3000));
+  await new Promise((r) => setTimeout(r, 0));
   const ps = [
     fetchEntities(tagsBase.concat("comedian"), 8),
     fetchEntities(tagsBase.concat("musician"), 8),
@@ -81,7 +81,12 @@ export default async function Page({
                   />
                 </div>
                 <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
-                  <span className="text-foreground">{artwork.name}</span>
+                  <Link
+                    href={`/admin/edit/${artwork.id}`}
+                    className="text-foreground"
+                  >
+                    {artwork.name}
+                  </Link>
                   <Badge className="" variant={"outline"}>
                     {artwork.oinks}
                     <Image

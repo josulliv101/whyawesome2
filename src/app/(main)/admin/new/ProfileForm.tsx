@@ -28,6 +28,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import MultipleSelector, { Option } from "@/components/MultipleSelector";
 import { TagName, tagDefinitionList } from "@/lib/types";
+import { addProfile } from "@/lib/firebase";
 
 const OPTIONS: Option[] = tagDefinitionList.map((tag) => ({
   label: tag.id as TagName,
@@ -53,7 +54,7 @@ const profileFormSchema = z.object({
     .max(60, {
       message: "Name must not be longer than 30 characters.",
     }),
-  bio: z.string().max(15).min(4),
+  bio: z.string().max(500).min(4),
   pic: z.string().max(200).min(0),
   tags: z
     .array(
@@ -80,13 +81,13 @@ const defaultValues: Partial<ProfileFormValues> = {
   profileId: "",
   bio: "",
   oinks: 0,
-  tags: {} as Record<TagName, boolean>,
+  tags: [] as any, // Record<TagName, boolean>,
 };
 
-export function ProfileForm() {
+export function ProfileForm({ addProfile, profile }: any) {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues,
+    defaultValues: !!profile ? profile : defaultValues,
     mode: "onChange",
   });
 
@@ -96,7 +97,8 @@ export function ProfileForm() {
     keyName: "value",
   });
 
-  function onSubmit(data: ProfileFormValues) {
+  async function onSubmit(data: ProfileFormValues) {
+    await addProfile(data);
     toast(
       <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
         <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -187,6 +189,7 @@ export function ProfileForm() {
                     replace(tags);
                   }}
                   defaultOptions={OPTIONS}
+                  value={field.value as any}
                   placeholder="Add some tags..."
                   emptyIndicator={
                     <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">

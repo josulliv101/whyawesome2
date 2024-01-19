@@ -206,6 +206,10 @@ export const tagDefinitionList = [
   { id: "bar", plural: "bars" },
   { id: "library", plural: "libraries" },
   { id: "restaurant", plural: "restaurants" },
+
+  { id: "boston" },
+  { id: "chicago" },
+  { id: "new-york-city" },
 ] as const;
 
 export type TagName = (typeof tagDefinitionList)[number]["id"];

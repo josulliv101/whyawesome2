@@ -1,11 +1,18 @@
 import { Separator } from "@/components/ui/separator";
-import { ProfileForm } from "./ProfileForm";
-import { Profile } from "@/lib/types";
-import { addProfile } from "@/lib/firebase";
-import { revalidatePath } from "next/cache";
 
-export default function Page() {
-  async function add({ bio, tags, displayName, ...rest }: any) {
+import { Profile } from "@/lib/types";
+import { addProfile, fetchProfile } from "@/lib/firebase";
+import { revalidatePath } from "next/cache";
+import { ProfileForm } from "../../new/ProfileForm";
+
+export default async function Page({
+  params: { profile },
+}: {
+  params: { profile: string };
+}) {
+  const data = await fetchProfile(profile);
+
+  async function onSubmit({ bio, tags, displayName, ...rest }: any) {
     "use server";
     const profile: Profile = {
       ...rest,
@@ -16,7 +23,7 @@ export default function Page() {
     console.log("addProfile", profile);
     await addProfile(profile);
 
-    // revalidatePath("/");
+    revalidatePath(`/admin/edit/${profile}`);
   }
   return (
     <div className="w-full max-w-lg mx-auto space-y-6">
@@ -28,7 +35,7 @@ export default function Page() {
       </div>
       <Separator />
 
-      <ProfileForm addProfile={add} />
+      <ProfileForm addProfile={onSubmit} profile={data} />
     </div>
   );
 }

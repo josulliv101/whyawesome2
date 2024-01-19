@@ -21,6 +21,29 @@ export const getFirebaseAdminApp = () => {
 
 export const db = admin.firestore(getFirebaseAdminApp());
 
+export async function addProfile({ profileId, ...profile }: any) {
+  console.log("formData", profileId, profile);
+  if (!profileId) {
+    throw new Error("profile id is required.");
+  }
+  await db.collection("entity").doc(profileId).set(profile);
+}
+
+export async function fetchProfile(profileId: string) {
+  if (!profileId) {
+    throw new Error("profile id is required.");
+  }
+  const d = await db.collection("entity").doc(profileId).get();
+  const { description, name, tagMap = {}, ...rest }: any = d.data();
+  return {
+    ...rest,
+    profileId,
+    bio: description,
+    displayName: name,
+    tags: Object.keys(tagMap).map((tag) => ({ label: tag, value: tag })),
+  };
+}
+
 export async function fetchEntities(
   tags: Array<string> = [],
   limit = 8,
