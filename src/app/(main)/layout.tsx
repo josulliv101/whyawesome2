@@ -172,28 +172,7 @@ export default function TagsLayout({
         <Sidebar className="lg:w-2/12" hub={hub} tagPrimary={tagPrimary} />
 
         <div className="lg:w-10/12 px-12 py-8 ">
-          <div className="">
-            <Tabs
-              value={tagPrimary ? tagPrimary : "person"}
-              className="h-full space-y-6 mb-10"
-            >
-              <div className="space-between flex items-center">
-                <TabsList>
-                  <TabsTrigger value="person">
-                    <Link href={`/${hub}/person`} className="relative">
-                      People
-                    </Link>
-                  </TabsTrigger>
-                  <TabsTrigger value="place">
-                    <Link href={`/${hub}/place`} className="relative">
-                      Places
-                    </Link>
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-            </Tabs>
-            {children}
-          </div>
+          <div className="">{children}</div>
         </div>
       </main>
     </div>

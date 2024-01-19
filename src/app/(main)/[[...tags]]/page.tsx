@@ -25,7 +25,7 @@ export default async function Page({
 }: ServerSideComponentProp<{ tags?: string[] }>) {
   const [hub, tagPrimary = "person", ...tagsParam] = tags;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== "all");
-  await new Promise((r) => setTimeout(r, 0));
+  await new Promise((r) => setTimeout(r, 3000));
   const ps = [
     fetchEntities(tagsBase.concat("comedian"), 8),
     fetchEntities(tagsBase.concat("musician"), 8),
@@ -35,6 +35,25 @@ export default async function Page({
   const [[comedians, count], [musicians], [sports]] = await Promise.all(ps);
   return (
     <>
+      <Tabs
+        value={tagPrimary ? tagPrimary : "person"}
+        className="h-full space-y-6 mb-10"
+      >
+        <div className="space-between flex items-center">
+          <TabsList>
+            <TabsTrigger value="person">
+              <Link href={`/${hub}/person`} className="relative">
+                People
+              </Link>
+            </TabsTrigger>
+            <TabsTrigger value="place">
+              <Link href={`/${hub}/place`} className="relative">
+                Places
+              </Link>
+            </TabsTrigger>
+          </TabsList>
+        </div>
+      </Tabs>
       <h2 className="flex items-center text-4xl font-semibold tracking-tight mb-1">
         Discover why {tagDefinitionMap[tagPrimary as TagName].plural} are
         awesome.
@@ -43,7 +62,6 @@ export default async function Page({
         Inclusion in the why awesome catalog is currently by invitation only
         &mdash; everyone can vote on why things are awesome.
       </p>
-
       <div className="">
         <h2 className="text-2xl font-semibold tracking-tight mb-4">
           Comedians
