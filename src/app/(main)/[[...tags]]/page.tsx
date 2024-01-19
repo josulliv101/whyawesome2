@@ -25,7 +25,7 @@ export default async function Page({
 }: ServerSideComponentProp<{ tags?: string[] }>) {
   const [hub, tagPrimary = "person", ...tagsParam] = tags;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== "all");
-  await new Promise((r) => setTimeout(r, 3000));
+  await new Promise((r) => setTimeout(r, 0));
   const ps = [
     fetchEntities(tagsBase.concat("comedian"), 8),
     fetchEntities(tagsBase.concat("musician"), 8),
@@ -40,8 +40,8 @@ export default async function Page({
         awesome.
       </h2>
       <p className="text-lg text-muted-foreground mb-12">
-        Inclusion in the whyaweso.me catalog is currently by invitation only,
-        everyone can vote on why things are awesome.
+        Inclusion in the why awesome catalog is currently by invitation only
+        &mdash; everyone can vote on why things are awesome.
       </p>
 
       <div className="">
