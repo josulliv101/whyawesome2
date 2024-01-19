@@ -190,7 +190,8 @@ export function ProfileForm({ addProfile, profile }: any) {
                   }}
                   defaultOptions={OPTIONS}
                   value={field.value as any}
-                  placeholder="Add some tags..."
+                  placeholder="Add tags..."
+                  creatable
                   emptyIndicator={
                     <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
                       no results found.
