@@ -62,12 +62,12 @@ export default async function Page({
         </div>
       </Tabs>
       <h2 className="flex items-center text-4xl font-semibold tracking-tight mb-1">
-        Discover what's awesome about{" "}
+        Discover what&#39;s awesome about{" "}
         {tagDefinitionMap[tagPrimary as TagName].plural}.
       </h2>
       <p className="text-lg text-muted-foreground mb-12">
-        Inclusion in the what's awesome catalog is by invitation only &mdash;
-        everyone can vote on what's awesome
+        Inclusion in the what&#39;s awesome catalog is by invitation only
+        &mdash; everyone can vote on what&#39;s awesome
       </p>
       {tagPrimary === "person" && (
         <>

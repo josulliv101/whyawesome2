@@ -68,7 +68,7 @@ export default function TagsLayout({
               src="/cute-mushroom.png"
             />
             <span className="font-normal text-sm relative top-[0px]">
-              what's awesome
+              what&#39;s awesome
             </span>
           </Link>
 

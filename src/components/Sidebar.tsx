@@ -1,3 +1,6 @@
+"use client";
+
+import { useSelectedLayoutSegment } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -9,6 +12,10 @@ interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Sidebar({ className, hub, tagPrimary }: SidebarProps) {
+  const segment = useSelectedLayoutSegment() || "";
+
+  const [hubSegment, primaryTagSegment = "person"] = segment.split("/");
+
   return (
     <div className={cn("w-[240px] pb-12 border-r", className)}>
       <div className="space-y-4 py-4">
@@ -22,21 +29,23 @@ export function Sidebar({ className, hub, tagPrimary }: SidebarProps) {
               className="w-full justify-start"
               asChild
             >
-              <Link href={`/boston/${tagPrimary}`}>Boston</Link>
+              <Link href={`/boston/${primaryTagSegment}`}>Boston</Link>
             </Button>
             <Button
               variant={hub === "chicago" ? "secondary" : "ghost"}
               className="w-full justify-start"
               asChild
             >
-              <Link href={`/chicago/${tagPrimary}`}>Chicago</Link>
+              <Link href={`/chicago/${primaryTagSegment}`}>Chicago</Link>
             </Button>
             <Button
               variant={hub === "new-york-city" ? "secondary" : "ghost"}
               className="w-full justify-start"
               asChild
             >
-              <Link href={`/new-york-city/${tagPrimary}`}>New York City</Link>
+              <Link href={`/new-york-city/${primaryTagSegment}`}>
+                New York City
+              </Link>
             </Button>
           </div>
         </div>
