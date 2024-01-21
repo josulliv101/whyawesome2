@@ -59,7 +59,7 @@ export default function TagsLayout({
     <div>
       <div className="flex justify-between items-center w-full border-b px-6">
         <div className="flex items-center space-x-2">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2.5">
             {/* <Logo /> */}
             <Image
               alt="whyawesome logo"
@@ -67,7 +67,9 @@ export default function TagsLayout({
               height="24"
               src="/cute-mushroom.png"
             />
-            <span className="font-normal">why awesome</span>
+            <span className="font-normal text-sm relative top-[0px]">
+              what's awesome
+            </span>
           </Link>
 
           {false && hub && (
