@@ -23,7 +23,7 @@ const defaultLayout = [265, 440, 655];
 export default async function Page({
   params: { tags = [] },
 }: ServerSideComponentProp<{ tags?: string[] }>) {
-  const [hub = "all", tagPrimary = "person", ...tagsParam] = tags;
+  const [hub = "all", tagPrimary = "place", ...tagsParam] = tags;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== "all");
   await new Promise((r) => setTimeout(r, 0));
   const ps =
@@ -79,13 +79,13 @@ export default async function Page({
               <div className="flex w-max space-x-4 p-4">
                 {comedians.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
-                    <div className="relative overflow-hidden rounded-md">
+                    <div className="relative overflow-hidden rounded-md bg-blue-500">
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-[3/4] h-fit w-fit object-cover"
+                        className="aspect-square h-fit w-fit object-cover   transition-all duration-1000 opacity-80 hover:opacity-100"
                         width={150}
-                        height={200}
+                        height={150}
                         priority={index < 6}
                       />
                     </div>
@@ -121,11 +121,11 @@ export default async function Page({
               <div className="flex w-max space-x-4 p-4">
                 {musicians.map((artwork) => (
                   <figure key={artwork.id} className="shrink-0">
-                    <div className="overflow-hidden rounded-md">
+                    <div className="overflow-hidden rounded-md bg-blue-500">
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-[3/4] h-fit w-fit object-cover"
+                        className="aspect-[3/4] h-fit w-fit object-cover   transition-all duration-1000 opacity-80 hover:opacity-100"
                         width={150}
                         height={200}
                         priority
@@ -158,13 +158,13 @@ export default async function Page({
               <div className="flex w-max space-x-4 p-4">
                 {sports.map((artwork) => (
                   <figure key={artwork.id} className="shrink-0">
-                    <div className="overflow-hidden rounded-md">
+                    <div className="overflow-hidden rounded-md bg-blue-500">
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-[3/4] h-fit w-fit object-cover"
+                        className="aspect-square h-fit w-fit object-cover transition-all duration-1000 opacity-80 hover:opacity-100"
                         width={150}
-                        height={200}
+                        height={150}
                       />
                     </div>
                     <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
@@ -198,13 +198,13 @@ export default async function Page({
               <div className="flex w-max space-x-4 p-4">
                 {musicians.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
-                    <div className="relative overflow-hidden rounded-md">
+                    <div className="relative overflow-hidden rounded-md bg-blue-500">
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-[3/4] h-fit w-fit object-cover"
+                        className="aspect-square h-fit w-fit object-cover  transition-all duration-1000 opacity-80 hover:opacity-100"
                         width={150}
-                        height={200}
+                        height={150}
                         priority={index < 6}
                       />
                     </div>
@@ -240,11 +240,11 @@ export default async function Page({
               <div className="flex w-max space-x-4 p-4">
                 {comedians.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
-                    <div className="relative overflow-hidden rounded-md">
+                    <div className="relative overflow-hidden rounded-md bg-blue-500">
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-[3/4] h-fit w-fit object-cover"
+                        className="aspect-[3/4] h-fit w-fit object-cover  transition-all duration-1000 opacity-80 hover:opacity-100"
                         width={150}
                         height={200}
                         priority={index < 6}
@@ -283,13 +283,13 @@ export default async function Page({
               <div className="flex w-max space-x-4 p-4">
                 {sports.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
-                    <div className="relative overflow-hidden rounded-md">
+                    <div className="relative overflow-hidden rounded-md bg-blue-500">
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-[3/4] h-fit w-fit object-cover"
+                        className="aspect-square h-fit w-fit object-cover   transition-all duration-1000  opacity-80 hover:opacity-100"
                         width={150}
-                        height={200}
+                        height={150}
                         priority={index < 6}
                       />
                     </div>
