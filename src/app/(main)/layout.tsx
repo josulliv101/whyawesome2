@@ -56,8 +56,8 @@ export default function TagsLayout({
   const [hub = "all", tagPrimary = "person", ...tagsParam] = tags;
   console.log("LAYOUT", tags);
   return (
-    <div>
-      <div className="flex justify-between items-center w-full border-b px-6">
+    <div className="">
+      <div className="sticky top-0 left-0 z-50 bg-white flex justify-between items-center w-full border-b px-6">
         <div className="flex items-center space-x-2">
           <Link href="/" className="flex items-center space-x-2.5">
             {/* <Logo /> */}

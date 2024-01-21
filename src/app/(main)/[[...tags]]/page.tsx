@@ -67,7 +67,7 @@ export default async function Page({
       </h2>
       <p className="text-lg text-muted-foreground mb-12">
         Inclusion in the what&#39;s awesome catalog is by invitation only
-        &mdash; everyone can vote on what&#39;s awesome
+        &mdash; everyone can vote on what&#39;s awesome.
       </p>
       {tagPrimary === "person" && (
         <>
@@ -83,7 +83,7 @@ export default async function Page({
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-square h-fit w-fit object-cover   transition-all duration-1000 opacity-80 hover:opacity-100"
+                        className="aspect-square h-fit w-fit object-cover object-top   transition-all duration-1000 opacity-80 hover:opacity-100"
                         width={150}
                         height={150}
                         priority={index < 6}
@@ -158,11 +158,11 @@ export default async function Page({
               <div className="flex w-max space-x-4 p-4">
                 {sports.map((artwork) => (
                   <figure key={artwork.id} className="shrink-0">
-                    <div className="overflow-hidden rounded-md bg-blue-500">
+                    <div className="overflow-hidden rounded-md bg-blue-500 w-fit h-fit">
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-square h-fit w-fit object-cover transition-all duration-1000 opacity-80 hover:opacity-100"
+                        className="aspect-square h-fit w-fit object-cover object-top transition-all duration-1000 opacity-80 hover:opacity-100"
                         width={150}
                         height={150}
                       />
@@ -198,11 +198,13 @@ export default async function Page({
               <div className="flex w-max space-x-4 p-4">
                 {musicians.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
-                    <div className="relative overflow-hidden rounded-md bg-blue-500">
+                    <div className="relative overflow-hidden rounded-md bg-blue-500 w-fit h-fit">
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-square h-fit w-fit object-cover  transition-all duration-1000 opacity-80 hover:opacity-100"
+                        className={`aspect-square h-fit w-fit object-cover  transition-all duration-500 opacity-80 hover:opacity-100 hover:scale-105 cursor-pointer ${
+                          index % 2 === 0 ? "hover:rotate-1" : "hover:-rotate-1"
+                        }`}
                         width={150}
                         height={150}
                         priority={index < 6}
@@ -244,7 +246,7 @@ export default async function Page({
                       <Image
                         src={artwork.pic}
                         alt={`Photo by ${artwork.name}`}
-                        className="aspect-[3/4] h-fit w-fit object-cover  transition-all duration-1000 opacity-80 hover:opacity-100"
+                        className="aspect-[3/4] w-fit h-fit object-cover  transition-all duration-1000 opacity-80 hover:opacity-100"
                         width={150}
                         height={200}
                         priority={index < 6}
@@ -255,19 +257,21 @@ export default async function Page({
                         href={`/admin/edit/${artwork.id}`}
                         className="text-foreground"
                       >
-                        {artwork.name.substring(0, 20)}
+                        {artwork.name.substring(0, 32)}
                       </Link>
+                    </figcaption>
+                    <div className="flex items-center justify-end mt-2">
                       <Badge className="" variant={"outline"}>
-                        {artwork.oinks}
                         <Image
                           alt="whyawesome logo"
                           width="16"
                           height="16"
                           src="/cute-mushroom.png"
-                          className="ml-1"
+                          className="mr-2"
                         />
+                        {artwork.oinks}
                       </Badge>
-                    </figcaption>
+                    </div>
                   </figure>
                 ))}
               </div>
