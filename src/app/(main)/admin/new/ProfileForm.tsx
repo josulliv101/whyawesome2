@@ -43,7 +43,7 @@ const profileFormSchema = z.object({
     .min(3, {
       message: "Profile Id must be at least 3 characters.",
     })
-    .max(30, {
+    .max(60, {
       message: "Username must not be longer than 30 characters.",
     }),
   displayName: z

@@ -36,7 +36,7 @@ export default async function Page({
       : [
           fetchEntities(tagsBase.concat("museum"), 8),
           fetchEntities(tagsBase.concat("nature"), 8),
-          fetchEntities(tagsBase.concat("nature"), 8),
+          fetchEntities(tagsBase.concat("college"), 8),
         ];
   // <Skeleton className="h-12 w-12 rounded-full" />
   const [[comedians, count], [musicians], [sports]] = await Promise.all(ps);
@@ -239,6 +239,49 @@ export default async function Page({
             <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
               <div className="flex w-max space-x-4 p-4">
                 {comedians.map((artwork, index) => (
+                  <figure key={artwork.id} className="shrink-0">
+                    <div className="relative overflow-hidden rounded-md">
+                      <Image
+                        src={artwork.pic}
+                        alt={`Photo by ${artwork.name}`}
+                        className="aspect-[3/4] h-fit w-fit object-cover"
+                        width={150}
+                        height={200}
+                        priority={index < 6}
+                      />
+                    </div>
+                    <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
+                      <Link
+                        href={`/admin/edit/${artwork.id}`}
+                        className="text-foreground"
+                      >
+                        {artwork.name.substring(0, 20)}
+                      </Link>
+                      <Badge className="" variant={"outline"}>
+                        {artwork.oinks}
+                        <Image
+                          alt="whyawesome logo"
+                          width="16"
+                          height="16"
+                          src="/cute-mushroom.png"
+                          className="ml-1"
+                        />
+                      </Badge>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </div>
+
+          <div className="">
+            <h2 className="text-2xl font-semibold tracking-tight mb-4">
+              Colleges and Universities
+            </h2>
+            <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
+              <div className="flex w-max space-x-4 p-4">
+                {sports.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
                     <div className="relative overflow-hidden rounded-md">
                       <Image
