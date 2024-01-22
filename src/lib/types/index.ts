@@ -160,12 +160,12 @@ export const tagDefinitionList = [
   {
     id: "person",
     plural: "people",
-    subTags: ["actor", "comedian", "musician", "sports", "academic"],
+    subTags: ["actor", "comedian", "musician", "sports", "academic", "science"],
   },
   {
     id: "place",
     plural: "places",
-    subTags: ["museum", "bar", "restaurant", "library", "college"],
+    subTags: ["nature", "museum", "bar", "restaurant", "library", "college"],
   },
   { id: "misc", plural: "misc", subTags: ["team", "movie"] },
   {
@@ -190,6 +190,7 @@ export const tagDefinitionList = [
     subTags: ["basketball", "football", "soccer", "golf", "baseball", "tennis"],
   },
   { id: "comedian", plural: "comedians" },
+  { id: "science", plural: "science" },
   { id: "actor", plural: "actors" },
   { id: "academic", plural: "academic" },
   { id: "drama", plural: "dramas" },

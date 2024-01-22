@@ -59,7 +59,7 @@ export default function TagsLayout({
     <div className="">
       <div className="sticky top-0 left-0 z-50 bg-white flex justify-between items-center w-full border-b px-6">
         <div className="flex items-center space-x-2">
-          <Link href="/" className="flex items-center space-x-2.5">
+          <Link href="/" className="flex items-center space-x-1.5">
             {/* <Logo /> */}
             <Image
               alt="whyawesome logo"
@@ -67,7 +67,8 @@ export default function TagsLayout({
               height="24"
               src="/cute-mushroom.png"
             />
-            <span className="font-normal text-sm relative top-[0px]">
+            <Separator orientation="vertical" className="border-red-600" />
+            <span className="font-semibold text-sm relative top-[0px] border-l-0 pl-0">
               what&#39;s awesome
             </span>
           </Link>

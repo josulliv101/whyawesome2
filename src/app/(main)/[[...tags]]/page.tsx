@@ -17,6 +17,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 // import { tagDefinitions } from "@/lib/tags";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DrillDownNav } from "@/components/DrillDownNav";
 
 const defaultLayout = [265, 440, 655];
 
@@ -40,35 +41,41 @@ export default async function Page({
         ];
   // <Skeleton className="h-12 w-12 rounded-full" />
   const [[comedians, count], [musicians], [sports]] = await Promise.all(ps);
+
   return (
     <>
-      <Tabs
-        value={tagPrimary ? tagPrimary : "person"}
-        className="h-full space-y-6 mb-10"
-      >
-        <div className="space-between flex items-center">
-          <TabsList>
-            <TabsTrigger value="person">
-              <Link href={`/${hub}/person`} className="relative">
-                People
-              </Link>
-            </TabsTrigger>
-            <TabsTrigger value="place">
-              <Link href={`/${hub}/place`} className="relative">
-                Places
-              </Link>
-            </TabsTrigger>
-          </TabsList>
-        </div>
-      </Tabs>
+      <div className="flex items-center mb-10 justify-between space-x-4">
+        <Tabs
+          value={tagPrimary ? tagPrimary : "person"}
+          className="h-full space-y-6 "
+        >
+          <div className="space-between flex items-center">
+            <TabsList>
+              <TabsTrigger value="person">
+                <Link href={`/${hub}/person`} className="relative">
+                  People
+                </Link>
+              </TabsTrigger>
+              <TabsTrigger value="place">
+                <Link href={`/${hub}/place`} className="relative">
+                  Places
+                </Link>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+        </Tabs>{" "}
+        <DrillDownNav tagPrimary={tagPrimary as TagName} />
+      </div>
+
       <h2 className="flex items-center text-4xl font-semibold tracking-tight mb-1">
         Discover what&#39;s awesome about{" "}
         {tagDefinitionMap[tagPrimary as TagName].plural}.
       </h2>
-      <p className="text-lg text-muted-foreground mb-12">
-        Inclusion in the what&#39;s awesome catalog is by invitation only
-        &mdash; everyone can vote on what&#39;s awesome.
+      <p className="text-lg text-muted-foreground mb-6">
+        Inclusion in the what&#39;s awesome catalog is by invitation only.
+        Everyone can vote on what&#39;s awesome.
       </p>
+      <div className="hidden flex items-center justify-end pb-0"></div>
       {tagPrimary === "person" && (
         <>
           <div className="">
