@@ -49,7 +49,7 @@ export async function fetchProfile(profileId: string) {
     name,
     tagMap = {},
     ...rest
-  }: any = profileSnapshot.data();
+  }: any = profileSnapshot.data() || {};
   return {
     ...rest,
     id: profileId,
