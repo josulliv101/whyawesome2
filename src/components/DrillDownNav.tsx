@@ -64,9 +64,16 @@ export const statuses = [
 interface DrillDownNav extends React.HTMLAttributes<HTMLDivElement> {
   hub?: string;
   tagPrimary: TagName;
+  tags: TagName[];
+  activeTags: TagName[];
 }
 
-export function DrillDownNav({ className, tagPrimary }: DrillDownNav) {
+export function DrillDownNav({
+  className,
+  tags,
+  activeTags,
+  tagPrimary,
+}: DrillDownNav) {
   const segment = useSelectedLayoutSegment() || "";
   const tagPrimaryDefinition = tagDefinitionMap[tagPrimary as TagName];
   const table = useReactTable({
@@ -88,13 +95,11 @@ export function DrillDownNav({ className, tagPrimary }: DrillDownNav) {
 
   return (
     <>
-      {tagPrimaryDefinition?.subTags?.map(
-        (tag) => null // <Badge variant="secondary">{tag}</Badge>
-      )}
       <FacetedFilter
         column={table.getColumn("status")}
         title="Categories"
-        options={tagPrimaryDefinition?.subTags?.map((tag) => ({
+        activeTags={activeTags}
+        options={tags.map((tag) => ({
           value: tag,
           label: tag,
         }))}

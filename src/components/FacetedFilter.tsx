@@ -25,6 +25,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { TagName } from "@/lib/types";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -34,15 +35,17 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
+  activeTags: TagName[];
 }
 
 export function FacetedFilter<TData, TValue>({
+  activeTags,
   column,
   title,
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
-  const selectedValues = { size: 3, has: () => true }; //new Set(column?.getFilterValue() as string[]);
+  const selectedValues = { size: activeTags.length, has: () => true }; //new Set(column?.getFilterValue() as string[]);
 
   return (
     <Popover>
@@ -60,7 +63,7 @@ export function FacetedFilter<TData, TValue>({
                 {selectedValues.size}
               </Badge>
               <div className="hidden space-x-1 lg:flex">
-                {selectedValues.size > 2 ? (
+                {selectedValues.size > 4 ? (
                   <Badge
                     variant="secondary"
                     className="rounded-sm px-1 font-normal bg-transparent hover:bg-transparent"
@@ -69,7 +72,9 @@ export function FacetedFilter<TData, TValue>({
                   </Badge>
                 ) : (
                   (options || [])
-                    .filter((option) => selectedValues.has())
+                    .filter(({ value }) =>
+                      activeTags.includes(value as TagName)
+                    )
                     .map((option) => (
                       <Badge
                         variant="secondary"
@@ -92,7 +97,7 @@ export function FacetedFilter<TData, TValue>({
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {options?.map((option) => {
-                const isSelected = selectedValues.has();
+                const isSelected = activeTags.includes(option.value as TagName);
                 return (
                   <CommandItem
                     key={option.value}

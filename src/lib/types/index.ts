@@ -233,6 +233,37 @@ export const tagDefinitionMap: Record<TagName, TagDefinition> =
     };
   }, {} as Record<TagName, TagDefinition>);
 
+export function getPrimaryTagForTag(tag: TagName): "person" | "place" | null {
+  if (tag === "person" || tag === "place") {
+    return tag;
+  }
+  if (tagDefinitionMap.person.subTags?.includes(tag)) {
+    return "person";
+  }
+  if (tagDefinitionMap.place.subTags?.includes(tag)) {
+    return "place";
+  }
+  return null;
+}
+
+export function getHubTagMap(
+  tags: Array<TagName>
+): Record<"person" | "place", Array<Partial<TagName>>> {
+  return tags.reduce(
+    (acc: Record<"person" | "place", Array<Partial<TagName>>>, tag) => {
+      const primaryTag = getPrimaryTagForTag(tag);
+      if (!!primaryTag && tag) {
+        return {
+          ...acc,
+          [primaryTag]: acc[primaryTag].concat(tag),
+        };
+      }
+      return acc;
+    },
+    { person: [], place: [] }
+  );
+}
+
 export interface Reason {
   id: string;
   reason: string;
@@ -247,4 +278,5 @@ export interface Profile {
   reasons: Array<Reason>;
   oinks?: number;
   tags: Array<{ label: string; value: string }>;
+  hubTagMap?: Record<TagName, boolean>;
 }
