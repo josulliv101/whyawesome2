@@ -37,7 +37,7 @@ const OPTIONS: Option[] = tagDefinitionList.map((tag) => ({
 
 tagDefinitionList;
 
-const profileFormSchema = z.object({
+export const profileFormSchema = z.object({
   profileId: z
     .string()
     .min(3, {
@@ -72,9 +72,16 @@ const profileFormSchema = z.object({
       return map;
     }),
   oinks: z.coerce.number().min(0).multipleOf(1),
+  reasons: z.array(
+    z.object({
+      id: z.string().optional(),
+      reason: z.string(),
+      votes: z.number(),
+    })
+  ),
 });
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>;
+export type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
@@ -82,6 +89,7 @@ const defaultValues: Partial<ProfileFormValues> = {
   bio: "",
   oinks: 0,
   tags: [] as any, // Record<TagName, boolean>,
+  reasons: [],
 };
 
 export function ProfileForm({ addProfile, profile }: any) {
@@ -91,6 +99,12 @@ export function ProfileForm({ addProfile, profile }: any) {
     mode: "onChange",
   });
 
+  const { fields, append, remove } = useFieldArray({
+    name: "reasons",
+    control: form.control,
+    keyName: "reason",
+  });
+
   const { replace } = useFieldArray({
     name: "tags" as never, // TODO fix typing
     control: form.control,
@@ -98,7 +112,7 @@ export function ProfileForm({ addProfile, profile }: any) {
   });
 
   async function onSubmit(data: ProfileFormValues) {
-    await addProfile(data);
+    // await addProfile(data);
     toast(
       <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
         <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -227,6 +241,52 @@ export function ProfileForm({ addProfile, profile }: any) {
             </FormItem>
           )}
         />
+
+        <div>
+          {fields.map((field, index) => (
+            <FormField
+              control={form.control}
+              key={field.id || index}
+              name={`reasons.${index}.reason`}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className={cn(index !== 0 && "sr-only")}>
+                    what's awesome?
+                  </FormLabel>
+                  <FormDescription className={cn(index !== 0 && "sr-only")}>
+                    Add what's awesome.
+                  </FormDescription>
+                  <FormControl>
+                    <div className="flex w-full items-center space-x-2">
+                      <Input {...field} className="" />
+                      <Button
+                        id={String(index)}
+                        onClick={(ev) => {
+                          ev.preventDefault();
+                          remove(Number(ev.currentTarget.id));
+                          console.log("args", ev.currentTarget.id);
+                        }}
+                      >
+                        delete
+                      </Button>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          ))}
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="mt-2"
+            onClick={() => append({ reason: "", votes: 0 })}
+          >
+            Add
+          </Button>
+        </div>
+
         <Button type="submit">Update profile</Button>
       </form>
     </Form>

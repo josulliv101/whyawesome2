@@ -1,5 +1,6 @@
 import admin from "firebase-admin";
 import { Profile } from "./types";
+import { ProfileForm } from "@/app/(main)/admin/new/ProfileForm";
 
 const serviceAccount = JSON.parse(
   process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
@@ -33,14 +34,31 @@ export async function fetchProfile(profileId: string) {
   if (!profileId) {
     throw new Error("profile id is required.");
   }
-  const d = await db.collection("entity").doc(profileId).get();
-  const { description, name, tagMap = {}, ...rest }: any = d.data();
+  const profileSnapshot = await db.collection("entity").doc(profileId).get();
+  const reasonsSnapshot = await db
+    .collection(`entity/${profileId}/whyawesome`)
+    .get();
+
+  const reasons: Profile["reasons"] = [];
+  reasonsSnapshot.forEach((doc: any) =>
+    reasons.push({ id: doc.id, ...doc.data() })
+  );
+
+  const {
+    description,
+    name,
+    tagMap = {},
+    ...rest
+  }: any = profileSnapshot.data();
   return {
     ...rest,
-    profileId,
-    bio: description,
-    displayName: name,
+    id: profileId,
+    description: description,
+    name: name,
     tags: Object.keys(tagMap).map((tag) => ({ label: tag, value: tag })),
+    reasons: reasons.sort((a, b) => {
+      return b.votes - a.votes;
+    }),
   };
 }
 

@@ -160,11 +160,13 @@ export const tagDefinitionList = [
   {
     id: "person",
     plural: "people",
+    private: true,
     subTags: ["actor", "comedian", "musician", "sports", "academic", "science"],
   },
   {
     id: "place",
     plural: "places",
+    private: true,
     subTags: ["nature", "museum", "bar", "restaurant", "library", "college"],
   },
   { id: "misc", plural: "misc", subTags: ["team", "movie"] },
@@ -218,6 +220,7 @@ export type TagName = (typeof tagDefinitionList)[number]["id"];
 export type TagDefinition = {
   id: TagName;
   plural?: string;
+  private?: boolean;
   subTags?: Array<TagName>;
 };
 
@@ -231,6 +234,7 @@ export const tagDefinitionMap: Record<TagName, TagDefinition> =
   }, {} as Record<TagName, TagDefinition>);
 
 export interface Reason {
+  id: string;
   reason: string;
   votes: number;
 }
@@ -242,4 +246,5 @@ export interface Profile {
   description?: string;
   reasons: Array<Reason>;
   oinks?: number;
+  tags: Array<{ label: string; value: string }>;
 }

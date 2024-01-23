@@ -1,7 +1,11 @@
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import {
   ServerSideComponentProp,
   TagDefinition,
@@ -18,6 +22,8 @@ import { Button } from "@/components/ui/button";
 // import { tagDefinitions } from "@/lib/tags";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DrillDownNav } from "@/components/DrillDownNav";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getHubColor } from "@/lib/utils";
 
 const defaultLayout = [265, 440, 655];
 
@@ -44,7 +50,7 @@ export default async function Page({
 
   return (
     <>
-      <div className="flex items-center mb-10 justify-between space-x-4">
+      <div className="flex items-center mb-12 justify-between space-x-4">
         <Tabs
           value={tagPrimary ? tagPrimary : "person"}
           className="h-full space-y-6 "
@@ -64,14 +70,43 @@ export default async function Page({
             </TabsList>
           </div>
         </Tabs>{" "}
-        <DrillDownNav tagPrimary={tagPrimary as TagName} />
+        <div className="flex items-center space-x-4">
+          {!!hub && hub !== "all" && (
+            <div className="flex items-center border rounded-sm text-muted-foreground text-sm">
+              <div className="relative w-[40px] h-[40px]">
+                <Link href={`/profile/${hub}`}>
+                  {/* <Image
+                    className="w-[40px] h-[40px] opacity-75"
+                    src="/boston.jpg"
+                    alt="boston"
+                    fill
+                  /> */}
+                  <Avatar className="rounded-sm">
+                    {/* <AvatarImage src="/boston.jpg" alt="@boston" /> */}
+                    <AvatarFallback
+                      className={`${getHubColor(
+                        hub as "chicago" | "boston" | "new-york-city"
+                      )} text-white`}
+                    >
+                      {hub.split("-").map((token) => token[0])}
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
+              </div>
+              <div className="px-3 py-0">
+                <Link href={`/profile/${hub}`}>view {hub}'s profile</Link>
+              </div>
+            </div>
+          )}
+          <DrillDownNav tagPrimary={tagPrimary as TagName} />
+        </div>
       </div>
 
       <h2 className="flex items-center text-4xl font-semibold tracking-tight mb-1">
-        Discover what&#39;s awesome about{" "}
-        {tagDefinitionMap[tagPrimary as TagName].plural}.
+        {false && hub && hub !== "all" ? `${hub} / ` : ""} discover what&#39;s
+        awesome about {tagDefinitionMap[tagPrimary as TagName].plural}.
       </h2>
-      <p className="text-lg text-muted-foreground mb-6">
+      <p className="text-lg text-muted-foreground mb-12">
         Inclusion in the what&#39;s awesome catalog is by invitation only.
         Everyone can vote on what&#39;s awesome.
       </p>
@@ -80,21 +115,58 @@ export default async function Page({
         <>
           <div className="">
             <h2 className="text-2xl font-semibold tracking-tight mb-4">
-              Comedians
+              {hub && hub !== "all" ? `${hub} / ` : ""} comedians
             </h2>
             <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
               <div className="flex w-max space-x-4 p-4">
                 {comedians.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
                     <div className="relative overflow-hidden rounded-md bg-blue-500">
-                      <Image
-                        src={artwork.pic}
-                        alt={`Photo by ${artwork.name}`}
-                        className="aspect-square h-fit w-fit object-cover object-top   transition-all duration-1000 opacity-80 hover:opacity-100"
-                        width={150}
-                        height={150}
-                        priority={index < 6}
-                      />
+                      <HoverCard>
+                        <HoverCardTrigger href={`/profile/${artwork.id}`}>
+                          <Image
+                            src={artwork.pic}
+                            alt={`Photo by ${artwork.name}`}
+                            className="aspect-square h-fit w-fit object-cover object-top   transition-all duration-1000 opacity-80 hover:opacity-100"
+                            width={150}
+                            height={150}
+                            priority={index < 6}
+                          />
+                        </HoverCardTrigger>
+                        <HoverCardContent
+                          sideOffset={24}
+                          side="top"
+                          className="w-[600px]"
+                        >
+                          <div className="flex px-4 pt-6 pb-2 space-x-8 w-[500px]">
+                            <div className="relative min-w-[68px] w-[68px] h-[68px]">
+                              <Image
+                                className="object-cover"
+                                alt={artwork.name}
+                                src="/cute-mushroom.png"
+                                fill
+                              />
+                            </div>
+                            <div>
+                              <p className="font-semibold">
+                                {artwork.oinks} mushrooms
+                              </p>
+                              <p className="whitespace-normal pr-2">
+                                {artwork.description}{" "}
+                                <p className="absolute top-2 right-4 text-muted-foreground text-md space-x-4">
+                                  <span>
+                                    #
+                                    {artwork.id
+                                      .replaceAll(/[\s'-]/g, "")
+                                      .toLocaleLowerCase()}
+                                  </span>
+                                  <span>#whatsawesome</span>
+                                </p>
+                              </p>
+                            </div>
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
                     </div>
                     <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                       <Link
@@ -122,21 +194,47 @@ export default async function Page({
           </div>
           <div className="">
             <h2 className="text-2xl font-semibold tracking-tight mb-4">
-              Musicians
+              {hub && hub !== "all" ? `${hub} / ` : ""} musicians
             </h2>
             <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
               <div className="flex w-max space-x-4 p-4">
-                {musicians.map((artwork) => (
+                {musicians.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
                     <div className="overflow-hidden rounded-md bg-blue-500">
-                      <Image
-                        src={artwork.pic}
-                        alt={`Photo by ${artwork.name}`}
-                        className="aspect-[3/4] h-fit w-fit object-cover   transition-all duration-1000 opacity-80 hover:opacity-100"
-                        width={150}
-                        height={200}
-                        priority
-                      />
+                      <HoverCard>
+                        <HoverCardTrigger href={`/profile/${artwork.id}`}>
+                          <Image
+                            src={artwork.pic}
+                            alt={`Photo by ${artwork.name}`}
+                            className="aspect-square h-fit w-fit object-cover object-top   transition-all duration-1000 opacity-80 hover:opacity-100"
+                            width={150}
+                            height={150}
+                            priority={index < 6}
+                          />
+                        </HoverCardTrigger>
+                        <HoverCardContent
+                          sideOffset={24}
+                          side="top"
+                          className="w-[500px]"
+                        >
+                          <div className="flex p-2 space-x-8 w-[500px]">
+                            <div className="relative min-w-[68px] w-[68px] h-[68px]">
+                              <Image
+                                className="object-cover"
+                                alt={artwork.name}
+                                src="/cute-mushroom.png"
+                                fill
+                              />
+                            </div>
+                            <div>
+                              <p className="font-semibold">12 votes</p>
+                              <p className="whitespace-normal pr-2">
+                                {artwork.description}
+                              </p>
+                            </div>
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
                     </div>
                     <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                       <span className="text-foreground">{artwork.name}</span>
@@ -159,20 +257,52 @@ export default async function Page({
           </div>
           <div className="mb-12">
             <h2 className="text-2xl font-semibold tracking-tight mb-4">
-              Sports
+              {hub && hub !== "all" ? (
+                <span className="">{`${hub} / `}</span>
+              ) : (
+                ""
+              )}{" "}
+              sports
             </h2>
             <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
               <div className="flex w-max space-x-4 p-4">
-                {sports.map((artwork) => (
+                {sports.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
                     <div className="overflow-hidden rounded-md bg-blue-500 w-fit h-fit">
-                      <Image
-                        src={artwork.pic}
-                        alt={`Photo by ${artwork.name}`}
-                        className="aspect-square h-fit w-fit object-cover object-top transition-all duration-1000 opacity-80 hover:opacity-100"
-                        width={150}
-                        height={150}
-                      />
+                      <HoverCard closeDelay={0}>
+                        <HoverCardTrigger href={`/profile/${artwork.id}`}>
+                          <Image
+                            src={artwork.pic}
+                            alt={`Photo by ${artwork.name}`}
+                            className="aspect-square h-fit w-fit object-cover object-top   transition-all duration-1000 opacity-80 hover:opacity-100"
+                            width={150}
+                            height={150}
+                            priority={index < 6}
+                          />
+                        </HoverCardTrigger>
+                        <HoverCardContent
+                          sideOffset={24}
+                          side="top"
+                          className="w-[500px]"
+                        >
+                          <div className="flex p-2 space-x-8 w-[500px]">
+                            <div className="relative min-w-[48px] w-[48px] h-[48px]">
+                              <Image
+                                className="object-cover"
+                                alt={artwork.name}
+                                src="/cute-mushroom.png"
+                                fill
+                              />
+                            </div>
+                            <div>
+                              <p className="font-semibold">12 votes</p>
+                              <p className="whitespace-normal pr-2">
+                                {artwork.description}
+                              </p>
+                            </div>
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
                     </div>
                     <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                       <span className="text-foreground">{artwork.name}</span>
@@ -206,16 +336,20 @@ export default async function Page({
                 {musicians.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
                     <div className="relative overflow-hidden rounded-md bg-blue-500 w-fit h-fit">
-                      <Image
-                        src={artwork.pic}
-                        alt={`Photo by ${artwork.name}`}
-                        className={`aspect-square h-fit w-fit object-cover  transition-all duration-500 opacity-80 hover:opacity-100 hover:scale-105 cursor-pointer ${
-                          index % 2 === 0 ? "hover:rotate-1" : "hover:-rotate-1"
-                        }`}
-                        width={150}
-                        height={150}
-                        priority={index < 6}
-                      />
+                      <Link href={`/profile//${artwork.id}`}>
+                        <Image
+                          src={artwork.pic}
+                          alt={`Photo by ${artwork.name}`}
+                          className={`aspect-square h-fit w-fit object-cover  transition-all duration-500 opacity-80 hover:opacity-100 hover:scale-105 cursor-pointer ${
+                            index % 2 === 0
+                              ? "hover:rotate-1"
+                              : "hover:-rotate-1"
+                          }`}
+                          width={150}
+                          height={150}
+                          priority={index < 6}
+                        />
+                      </Link>
                     </div>
                     <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                       <Link
@@ -250,14 +384,16 @@ export default async function Page({
                 {comedians.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
                     <div className="relative overflow-hidden rounded-md bg-blue-500">
-                      <Image
-                        src={artwork.pic}
-                        alt={`Photo by ${artwork.name}`}
-                        className="aspect-[3/4] w-fit h-fit object-cover  transition-all duration-1000 opacity-80 hover:opacity-100"
-                        width={150}
-                        height={200}
-                        priority={index < 6}
-                      />
+                      <Link href={`/profile//${artwork.id}`}>
+                        <Image
+                          src={artwork.pic}
+                          alt={`Photo by ${artwork.name}`}
+                          className="aspect-[3/4] w-fit h-fit object-cover  transition-all duration-1000 opacity-80 hover:opacity-100"
+                          width={150}
+                          height={200}
+                          priority={index < 6}
+                        />
+                      </Link>
                     </div>
                     <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                       <Link
@@ -295,14 +431,16 @@ export default async function Page({
                 {sports.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
                     <div className="relative overflow-hidden rounded-md bg-blue-500">
-                      <Image
-                        src={artwork.pic}
-                        alt={`Photo by ${artwork.name}`}
-                        className="aspect-square h-fit w-fit object-cover   transition-all duration-1000  opacity-80 hover:opacity-100"
-                        width={150}
-                        height={150}
-                        priority={index < 6}
-                      />
+                      <Link href={`/profile//${artwork.id}`}>
+                        <Image
+                          src={artwork.pic}
+                          alt={`Photo by ${artwork.name}`}
+                          className="aspect-square h-fit w-fit object-cover   transition-all duration-1000  opacity-80 hover:opacity-100"
+                          width={150}
+                          height={150}
+                          priority={index < 6}
+                        />
+                      </Link>
                     </div>
                     <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                       <Link
