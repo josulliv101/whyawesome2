@@ -48,7 +48,7 @@ export default async function Page({
       <Tabs defaultValue="account" className="w-full">
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="account">details</TabsTrigger>
-          <TabsTrigger value="password">what's awesome</TabsTrigger>
+          <TabsTrigger value="password">what&#39;s awesome</TabsTrigger>
         </TabsList>
         <TabsContent value="account">
           <ProfileForm addProfile={onSubmit} profile={data} />
@@ -58,7 +58,8 @@ export default async function Page({
             <CardHeader>
               <CardTitle>Password</CardTitle>
               <CardDescription>
-                Change your password here. After saving, you'll be logged out.
+                Change your password here. After saving, you&#39;ll be logged
+                out.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">

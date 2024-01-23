@@ -251,10 +251,10 @@ export function ProfileForm({ addProfile, profile }: any) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className={cn(index !== 0 && "sr-only")}>
-                    what's awesome?
+                    what&#39;s awesome?
                   </FormLabel>
                   <FormDescription className={cn(index !== 0 && "sr-only")}>
-                    Add what's awesome.
+                    Add what&#39;s awesome.
                   </FormDescription>
                   <FormControl>
                     <div className="flex w-full items-center space-x-2">

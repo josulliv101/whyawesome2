@@ -94,7 +94,7 @@ export default async function Page({
                 </Link>
               </div>
               <div className="px-3 py-0">
-                <Link href={`/profile/${hub}`}>view {hub}'s profile</Link>
+                <Link href={`/profile/${hub}`}>view {hub}&#39;s profile</Link>
               </div>
             </div>
           )}

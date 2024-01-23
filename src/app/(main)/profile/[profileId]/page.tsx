@@ -35,7 +35,9 @@ export default async function Page({
           {profile.tags
             .filter((tag) => tag.value !== "person" && tag.value !== "place")
             .map((tag) => (
-              <Badge variant={"secondary"}>{tag.value}</Badge>
+              <Badge key={tag.value} variant={"secondary"}>
+                {tag.value}
+              </Badge>
             ))}
         </div>
       </div>
