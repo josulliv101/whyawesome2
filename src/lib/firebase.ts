@@ -95,11 +95,12 @@ export async function fetchEntities(
   snapshotPeople2.forEach((doc: any) =>
     people.push({ id: doc.id, ...doc.data() })
   );
-  const data = [people, snapshotCount.data().count, lastItem, firstItem] as [
-    Array<Profile>,
-    number,
-    number,
-    number
-  ];
+  const data = [
+    people,
+    snapshotCount.data().count,
+    lastItem,
+    firstItem,
+    tags.join(" / "),
+  ] as [Array<Profile>, number, number, number, string];
   return data;
 }

@@ -42,14 +42,14 @@ export default async function Page({
 
   const activeTags = hubTagsMap[tagPrimary as "person" | "place"];
 
-  const filteredActiveTags = activeTags.filter(
+  const defaultActiveTags = activeTags.filter(
     (tag) => profile?.hubTagMap?.[tag] === true
   );
-  console.log("filteredActiveTags", filteredActiveTags);
-
-  const ps = filteredActiveTags.map((tag) =>
-    fetchEntities(tagsBase.concat(tag), 8)
-  );
+  console.log("filteredActiveTags", tagsParam, defaultActiveTags);
+  const tagsToUse = (
+    tagsParam.length > 0 ? tagsParam : defaultActiveTags
+  ) as TagName[];
+  const ps = tagsToUse.map((tag) => fetchEntities(tagsBase.concat(tag), 8));
 
   const fetchedData = await Promise.all(ps);
 
@@ -105,8 +105,9 @@ export default async function Page({
           )}
           <DrillDownNav
             tags={activeTags}
-            activeTags={filteredActiveTags}
-            tagPrimary={tagPrimary as TagName}
+            activeTags={tagsToUse}
+            tagPrimary={tagPrimary as "person" | "place"}
+            hub={hub}
           />
         </div>
       </div>
@@ -120,12 +121,11 @@ export default async function Page({
         Everyone can vote on what&#39;s awesome.
       </p>
       <div className="hidden flex items-center justify-end pb-0"></div>
-      {fetchedData.map(([profiles, count], tagIndex) => {
+      {fetchedData.map(([profiles, count, _1, _2, label], tagIndex) => {
         return (
           <div key={tagIndex} className="">
             <h2 className="text-2xl font-semibold tracking-tight mb-4">
-              {hub && hub !== "all" ? `${hub} / ` : ""}{" "}
-              {filteredActiveTags[tagIndex]}
+              {label}
             </h2>
             <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
               <div className="flex w-max space-x-4 p-4">
@@ -183,7 +183,7 @@ export default async function Page({
                         href={`/admin/edit/${artwork.id}`}
                         className="text-foreground"
                       >
-                        {artwork.name}
+                        {artwork.name.substring(0, 21)}
                       </Link>
                       <Badge className="" variant={"outline"}>
                         {artwork.oinks}

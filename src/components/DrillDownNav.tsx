@@ -32,6 +32,7 @@ import {
 } from "@radix-ui/react-icons";
 import { FacetedFilter } from "./FacetedFilter";
 import { useReactTable } from "@tanstack/react-table";
+import { useState } from "react";
 
 export const statuses = [
   {
@@ -62,8 +63,8 @@ export const statuses = [
 ];
 
 interface DrillDownNav extends React.HTMLAttributes<HTMLDivElement> {
-  hub?: string;
-  tagPrimary: TagName;
+  hub: string;
+  tagPrimary: "person" | "place";
   tags: TagName[];
   activeTags: TagName[];
 }
@@ -72,8 +73,10 @@ export function DrillDownNav({
   className,
   tags,
   activeTags,
+  hub,
   tagPrimary,
 }: DrillDownNav) {
+  const [activeTagPendingCommit, setActiveTags] = useState(activeTags);
   const segment = useSelectedLayoutSegment() || "";
   const tagPrimaryDefinition = tagDefinitionMap[tagPrimary as TagName];
   const table = useReactTable({
@@ -103,6 +106,9 @@ export function DrillDownNav({
           value: tag,
           label: tag,
         }))}
+        // onChange={setActiveTags}
+        tagPrimary={tagPrimary}
+        hub={hub}
       />
     </>
   );

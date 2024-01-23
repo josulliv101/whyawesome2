@@ -26,6 +26,8 @@ import {
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { TagName } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -36,6 +38,9 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     icon?: React.ComponentType<{ className?: string }>;
   }[];
   activeTags: TagName[];
+  hub: string;
+  tagPrimary: "person" | "place";
+  // onChange: (tags: TagName[]) => void;
 }
 
 export function FacetedFilter<TData, TValue>({
@@ -43,10 +48,14 @@ export function FacetedFilter<TData, TValue>({
   column,
   title,
   options,
-}: DataTableFacetedFilterProps<TData, TValue>) {
+  hub,
+  tagPrimary,
+}: // onChange,
+DataTableFacetedFilterProps<TData, TValue>) {
+  const [activeTagPendingCommit, onChange] = useState(activeTags);
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = { size: activeTags.length, has: () => true }; //new Set(column?.getFilterValue() as string[]);
-
+  const router = useRouter();
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -97,15 +106,25 @@ export function FacetedFilter<TData, TValue>({
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {options?.map((option) => {
-                const isSelected = activeTags.includes(option.value as TagName);
+                const isSelected = activeTagPendingCommit.includes(
+                  option.value as TagName
+                );
                 return (
                   <CommandItem
                     key={option.value}
                     onSelect={() => {
+                      // router.push("/");
+
                       if (isSelected) {
-                        // selectedValues.delete(option.value);
+                        onChange(
+                          activeTagPendingCommit.filter(
+                            (tag) => tag !== option.value
+                          )
+                        );
                       } else {
-                        // selectedValues.add(option.value);
+                        onChange(
+                          activeTagPendingCommit.concat(option.value as TagName)
+                        );
                       }
                       // const filterValues = Array.from(selectedValues);
                       // column?.setFilterValue(
@@ -141,10 +160,15 @@ export function FacetedFilter<TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
+                    onSelect={() => {
+                      const url = `/${hub}/${tagPrimary}/${activeTagPendingCommit.join(
+                        "/"
+                      )}`;
+                      router.push(url);
+                    }}
                     className="justify-center text-center"
                   >
-                    Clear filters
+                    Apply
                   </CommandItem>
                 </CommandGroup>
               </>
