@@ -122,7 +122,7 @@ export default async function Page({
       <div className="hidden flex items-center justify-end pb-0"></div>
       {fetchedData.map(([profiles, count], tagIndex) => {
         return (
-          <div className="">
+          <div key={tagIndex} className="">
             <h2 className="text-2xl font-semibold tracking-tight mb-4">
               {hub && hub !== "all" ? `${hub} / ` : ""}{" "}
               {filteredActiveTags[tagIndex]}
