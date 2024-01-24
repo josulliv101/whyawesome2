@@ -133,20 +133,20 @@ export default async function Page({
             <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
               <div className="flex w-max space-x-4 p-4">
                 {profiles.map((artwork, index) => (
-                  <figure key={artwork.id} className="shrink-0">
-                    <div className="relative overflow-hidden rounded-md bg-blue-500">
+                  <figure key={artwork.id} className="shrink-0 w-[192px]">
+                    <div className="relative overflow-hidden rounded-md w-[192px] bg-blue-500">
                       <Link href={`/profile/${artwork.id}`} prefetch={false}>
                         <Image
                           src={artwork.pic}
                           alt={`Photo by ${artwork.name}`}
-                          className="aspect-square h-fit w-fit object-cover object-center transition-all duration-1000 opacity-80 hover:opacity-100"
+                          className="aspect-square h-fit w-[192px] object-cover object-center transition-all duration-1000 opacity-80 hover:opacity-100"
                           width={150}
                           height={150}
                           priority={index < 6}
                         />
                       </Link>
                     </div>
-                    <figcaption className="pt-2 text-xs text-muted-foreground">
+                    <figcaption className="pt-2 text-xs text-muted-foreground w-[192px]">
                       <Link
                         href={`/admin/edit/${artwork.id}`}
                         prefetch={false}
