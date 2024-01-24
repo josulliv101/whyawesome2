@@ -56,6 +56,11 @@ DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = { size: activeTags.length, has: () => true }; //new Set(column?.getFilterValue() as string[]);
   const router = useRouter();
+
+  // React.useEffect(() => {
+  //   const url = `/${hub}/${tagPrimary}/${activeTagPendingCommit.join("/")}`;
+  //   router.push(url);
+  // }, [activeTagPendingCommit]);
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -101,9 +106,9 @@ DataTableFacetedFilterProps<TData, TValue>) {
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <Command>
-          <CommandInput placeholder={title} />
+          {/* <CommandInput placeholder={title} /> */}
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            {/* <CommandEmpty>No results found.</CommandEmpty> */}
             <CommandGroup>
               {options?.map((option) => {
                 const isSelected = activeTagPendingCommit.includes(
@@ -166,7 +171,11 @@ DataTableFacetedFilterProps<TData, TValue>) {
                       )}`;
                       router.push(url);
                     }}
-                    className="justify-center text-center"
+                    className="justify-center text-center aria-disabled:opacity-50 aria-disabled:cursor-not-allowed cursor-pointer"
+                    disabled={
+                      JSON.stringify(activeTagPendingCommit) ===
+                      JSON.stringify(activeTags)
+                    }
                   >
                     Apply
                   </CommandItem>
