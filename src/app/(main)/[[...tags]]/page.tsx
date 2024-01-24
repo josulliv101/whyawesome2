@@ -78,7 +78,7 @@ export default async function Page({
         </Tabs>{" "}
         <div className="flex items-center space-x-4">
           {!!hub && hub !== "all" && (
-            <div className="flex items-center border rounded-sm text-muted-foreground text-sm">
+            <div className="hidden lg:flex items-center border rounded-sm text-muted-foreground text-sm">
               <div className="relative w-[40px] h-[40px]">
                 <Link href={`/profile/${hub}`} prefetch={false}>
                   {/* <Image

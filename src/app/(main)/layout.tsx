@@ -147,9 +147,13 @@ export default function TagsLayout({
         </Menubar>
       </div>
       <main className="flex min-h-screen items-start justify-stretch">
-        <Sidebar className="lg:w-2/12" hub={hub} tagPrimary={tagPrimary} />
+        <Sidebar
+          className="lg:w-1/4 xl:w-1/5"
+          hub={hub}
+          tagPrimary={tagPrimary}
+        />
 
-        <div className="w-full lg:w-10/12 px-4 py-4 lg:px-12 lg:py-8 ">
+        <div className="w-full lg:w-3/4 xl:w-5/6 px-4 py-4 lg:px-12 lg:py-8 ">
           <div className="">{children}</div>
         </div>
       </main>
