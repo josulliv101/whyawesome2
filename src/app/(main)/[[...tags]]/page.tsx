@@ -151,7 +151,7 @@ export default async function Page({
                       >
                         {artwork.name.substring(0, 30)}
                       </Link>
-                      <div className="mt-2 flex items-center justify-end">
+                      <div className="mt-2 flex items-center justify-start">
                         {/* <Link className="" href={`/profile/${artwork.id}`}>
                           @{artwork.id}
                         </Link> */}
@@ -173,7 +173,7 @@ export default async function Page({
                             side="top"
                             className="w-[600px] text-lg"
                           >
-                            <div className="flex px-4 pt-6 pb-2 space-x-12 w-[500px] min-h-[162px]">
+                            <div className="flex px-4 pt-2 pb-2 space-x-12 w-[500px] min-h-[162px]">
                               <div className="relative min-w-[68px] w-[68px] h-[68px]">
                                 <Image
                                   className="object-cover"
@@ -191,7 +191,7 @@ export default async function Page({
                                     <strong>{artwork.name}</strong>
                                   </p>
                                   <p>{artwork.description} </p>
-                                  <p className="absolute top-2 right-4 text-muted-foreground text-md space-x-4">
+                                  <p className="absolute top-2 right-4 text-muted-foreground text-sm space-x-4">
                                     {/* <span>
                                       #
                                       {artwork.id
