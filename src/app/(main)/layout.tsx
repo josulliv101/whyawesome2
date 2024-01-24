@@ -49,15 +49,29 @@ import { Sidebar } from "@/components/Sidebar";
 
 const defaultLayout = [265, 440, 655];
 
+// const hubs = {
+//   cities: [
+//     { id: "boston", label: "Boston" },
+//     { id: "chicago", label: "Chicago" },
+//     { id: "new-york-city", label: "New York CIty" },
+//   ],
+//   colleges: [
+//     { id: "tufts-university", label: "Tufts University" },
+//     { id: "university-of-chicago", label: "University of Chicago" },
+//     { id: "columbia-university", label: "Columbia University" },
+//   ],
+// };
+
 export default function TagsLayout({
   children,
   params: { tags = [] },
 }: PropsWithChildren<{ params: { tags?: string[] } }>) {
   const [hub = "all", tagPrimary = "person", ...tagsParam] = tags;
+
   console.log("LAYOUT", tags);
   return (
     <div className="">
-      <div className="sticky top-0 left-0 z-50 bg-white flex justify-between items-center w-full border-b px-6">
+      <div className="sticky top-0 left-0 z-50 h-[42px] bg-white flex justify-between items-center w-full border-b px-6">
         <div className="flex items-center space-x-2">
           <Link href="/" className="flex items-center space-x-1.5">
             {/* <Logo /> */}
@@ -83,71 +97,32 @@ export default function TagsLayout({
             </>
           )}
         </div>
-        <Menubar className="border-0">
-          <MenubarMenu>
-            <MenubarTrigger>Cities</MenubarTrigger>
-            <MenubarContent>
-              <MenubarRadioGroup value={hub}>
-                <MenubarRadioItem value="boston">Boston</MenubarRadioItem>
-                <MenubarRadioItem value="chicago">Chicago</MenubarRadioItem>
-                <MenubarRadioItem value="new-york-city">
-                  New York City
-                </MenubarRadioItem>
-              </MenubarRadioGroup>
-              {/* <MenubarSeparator />
-      <MenubarItem inset>Edit...</MenubarItem> */}
-              <MenubarSeparator />
-              <MenubarItem inset>Suggest a city...</MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
-          <MenubarMenu>
-            <MenubarTrigger>About</MenubarTrigger>
-            <MenubarContent>
-              <MenubarItem>
-                Undo <MenubarShortcut>⌘Z</MenubarShortcut>
-              </MenubarItem>
-              <MenubarItem>
-                Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
-              </MenubarItem>
-              <MenubarSeparator />
-              <MenubarSub>
-                <MenubarSubTrigger>Find</MenubarSubTrigger>
-                <MenubarSubContent>
-                  <MenubarItem>Search the web</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarItem>Find...</MenubarItem>
-                  <MenubarItem>Find Next</MenubarItem>
-                  <MenubarItem>Find Previous</MenubarItem>
-                </MenubarSubContent>
-              </MenubarSub>
-              <MenubarSeparator />
-              <MenubarItem>Cut</MenubarItem>
-              <MenubarItem>Copy</MenubarItem>
-              <MenubarItem>Paste</MenubarItem>
-            </MenubarContent>
-          </MenubarMenu>
+        <Menubar className="block lg:hidden border-0">
           <MenubarMenu>
             <MenubarTrigger>Explore</MenubarTrigger>
             <MenubarContent>
-              <Command className="min-w-md w-[300px]">
-                <CommandInput placeholder="Type a command or search..." />
+              <Command className="min-w-md ">
+                {/* <CommandInput placeholder="Type a command or search..." /> */}
                 <CommandList>
-                  <CommandEmpty>No results found.</CommandEmpty>
+                  {/* <CommandEmpty>No results found.</CommandEmpty> */}
                   <CommandGroup heading="Cities">
                     <CommandItem>
-                      <Calendar className="mr-2 h-4 w-4" />
-                      <span>Boston</span>
+                      <Link className="w-full" href={`/boston`}>
+                        Boston
+                      </Link>
                     </CommandItem>
                     <CommandItem>
-                      <Smile className="mr-2 h-4 w-4" />
-                      <span>Chicago</span>
+                      <Link className="w-full" href={`/chicago`}>
+                        Chicago
+                      </Link>
                     </CommandItem>
                     <CommandItem>
-                      <Calculator className="mr-2 h-4 w-4" />
-                      <span>New York City</span>
+                      <Link className="w-full" href={`/new-york-city`}>
+                        New York City
+                      </Link>
                     </CommandItem>
                   </CommandGroup>
-                  <CommandSeparator />
+                  {/* <CommandSeparator />
                   <CommandGroup heading="Settings">
                     <CommandItem>
                       <User className="mr-2 h-4 w-4" />
@@ -164,7 +139,7 @@ export default function TagsLayout({
                       <span>Settings</span>
                       <CommandShortcut>⌘S</CommandShortcut>
                     </CommandItem>
-                  </CommandGroup>
+                  </CommandGroup> */}
                 </CommandList>
               </Command>
             </MenubarContent>
@@ -174,7 +149,7 @@ export default function TagsLayout({
       <main className="flex min-h-screen items-start justify-stretch">
         <Sidebar className="lg:w-2/12" hub={hub} tagPrimary={tagPrimary} />
 
-        <div className="w-full lg:w-10/12 px-4 py-2 lg:px-12 lg:py-8 ">
+        <div className="w-full lg:w-10/12 px-4 py-4 lg:px-12 lg:py-8 ">
           <div className="">{children}</div>
         </div>
       </main>
