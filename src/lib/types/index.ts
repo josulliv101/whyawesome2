@@ -265,7 +265,7 @@ export function getHubTagMap(
 }
 
 export interface Reason {
-  id: string;
+  id?: string;
   reason: string;
   votes: number;
 }

@@ -23,12 +23,12 @@ export default async function Page({
 }) {
   const data = await fetchProfile(profile);
 
-  async function onSubmit({ bio, tags, displayName, ...rest }: any) {
+  async function onSubmit({ tags, ...rest }: any) {
     "use server";
     const profile: Profile = {
       ...rest,
-      description: bio,
-      name: displayName,
+      // description: bio,
+      // name: displayName,
       tagMap: tags,
     };
     console.log("addProfile", profile);

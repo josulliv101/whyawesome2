@@ -22,7 +22,7 @@ export const getFirebaseAdminApp = () => {
 
 export const db = admin.firestore(getFirebaseAdminApp());
 
-export async function addProfile({ profileId, ...profile }: any) {
+export async function addProfile({ profileId, reasons, ...profile }: any) {
   console.log("formData", profileId, profile);
   if (!profileId) {
     throw new Error("profile id is required.");
@@ -53,6 +53,7 @@ export async function fetchProfile(profileId: string) {
   return {
     ...rest,
     id: profileId,
+    profileId,
     description: description,
     name: name,
     tags: Object.keys(tagMap).map((tag) => ({ label: tag, value: tag })),

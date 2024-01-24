@@ -88,7 +88,7 @@ export default async function Page({
                     fill
                   /> */}
                   <Avatar className="rounded-sm">
-                    {/* <AvatarImage src="/boston.jpg" alt="@boston" /> */}
+                    <AvatarImage src={profile.pic} alt={profile.name} />
                     <AvatarFallback
                       className={`${getHubColor(
                         hub as "chicago" | "boston" | "new-york-city"
@@ -133,69 +133,79 @@ export default async function Page({
                 {profiles.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
                     <div className="relative overflow-hidden rounded-md bg-blue-500">
-                      <HoverCard>
-                        <HoverCardTrigger href={`/profile/${artwork.id}`}>
-                          <Image
-                            src={artwork.pic}
-                            alt={`Photo by ${artwork.name}`}
-                            className="aspect-square h-fit w-fit object-cover object-center transition-all duration-1000 opacity-80 hover:opacity-100"
-                            width={150}
-                            height={150}
-                            priority={index < 6}
-                          />
-                        </HoverCardTrigger>
-                        <HoverCardContent
-                          sideOffset={24}
-                          side="top"
-                          className="w-[600px]"
-                        >
-                          <div className="flex px-4 pt-6 pb-2 space-x-8 w-[500px]">
-                            <div className="relative min-w-[68px] w-[68px] h-[68px]">
-                              <Image
-                                className="object-cover"
-                                alt={artwork.name}
-                                src="/cute-mushroom.png"
-                                fill
-                              />
-                            </div>
-                            <div>
-                              <p className="font-semibold">
-                                {artwork.oinks} mushrooms
-                              </p>
-                              <p className="whitespace-normal pr-2">
-                                {artwork.description}{" "}
-                                <p className="absolute top-2 right-4 text-muted-foreground text-md space-x-4">
-                                  <span>
-                                    #
-                                    {artwork.id
-                                      .replaceAll(/[\s'-]/g, "")
-                                      .toLocaleLowerCase()}
-                                  </span>
-                                  <span>#whatsawesome</span>
-                                </p>
-                              </p>
-                            </div>
-                          </div>
-                        </HoverCardContent>
-                      </HoverCard>
+                      <Link href={`/profile/${artwork.id}`}>
+                        <Image
+                          src={artwork.pic}
+                          alt={`Photo by ${artwork.name}`}
+                          className="aspect-square h-fit w-fit object-cover object-center transition-all duration-1000 opacity-80 hover:opacity-100"
+                          width={150}
+                          height={150}
+                          priority={index < 6}
+                        />
+                      </Link>
                     </div>
-                    <figcaption className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
+                    <figcaption className="pt-2 text-xs text-muted-foreground">
                       <Link
                         href={`/admin/edit/${artwork.id}`}
                         className="text-foreground"
                       >
-                        {artwork.name.substring(0, 21)}
+                        {artwork.name.substring(0, 30)}
                       </Link>
-                      <Badge className="" variant={"outline"}>
-                        {artwork.oinks}
-                        <Image
-                          alt="whyawesome logo"
-                          width="16"
-                          height="16"
-                          src="/cute-mushroom.png"
-                          className="ml-1"
-                        />
-                      </Badge>
+                      <div className="mt-2 flex items-center justify-end">
+                        {/* <Link className="" href={`/profile/${artwork.id}`}>
+                          @{artwork.id}
+                        </Link> */}
+                        <HoverCard>
+                          <HoverCardTrigger href={`/profile/${artwork.id}`}>
+                            <Badge className="" variant={"outline"}>
+                              <Image
+                                alt="whyawesome logo"
+                                width="16"
+                                height="16"
+                                src="/earth2.jpg"
+                                className="mr-1 relative left-[-2px]"
+                              />
+                              {artwork.oinks}
+                            </Badge>
+                          </HoverCardTrigger>
+                          <HoverCardContent
+                            sideOffset={24}
+                            side="top"
+                            className="w-[600px] text-lg"
+                          >
+                            <div className="flex px-4 pt-6 pb-2 space-x-12 w-[500px] min-h-[162px]">
+                              <div className="relative min-w-[68px] w-[68px] h-[68px]">
+                                <Image
+                                  className="object-cover"
+                                  alt={artwork.name}
+                                  src="/earth2.jpg"
+                                  fill
+                                />
+                                <p className="text-sm font-semibold mt-[74px]">
+                                  {artwork.oinks} votes
+                                </p>
+                              </div>
+                              <div>
+                                <p className="whitespace-normal pr-2">
+                                  <p>
+                                    <strong>{artwork.name}</strong>
+                                  </p>
+                                  <p>{artwork.description} </p>
+                                  <p className="absolute top-2 right-4 text-muted-foreground text-md space-x-4">
+                                    {/* <span>
+                                      #
+                                      {artwork.id
+                                        .replaceAll(/[\s'-]/g, "")
+                                        .toLocaleLowerCase()}
+                                    </span> */}
+                                    <span>#whatsawesome</span>
+                                  </p>
+                                </p>
+                              </div>
+                            </div>
+                          </HoverCardContent>
+                        </HoverCard>
+                      </div>
                     </figcaption>
                   </figure>
                 ))}

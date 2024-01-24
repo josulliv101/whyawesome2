@@ -65,9 +65,9 @@ export default function TagsLayout({
               alt="whyawesome logo"
               width="24"
               height="24"
-              src="/cute-mushroom.png"
+              src="/earth2.jpg"
             />
-            <Separator orientation="vertical" className="border-red-600" />
+            <Separator orientation="vertical" className="border-gray-600" />
             <span className="font-semibold text-sm relative top-[0px] border-l-0 pl-0">
               what&#39;s awesome
             </span>

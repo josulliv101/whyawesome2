@@ -5,12 +5,12 @@ import { addProfile } from "@/lib/firebase";
 import { revalidatePath } from "next/cache";
 
 export default function Page() {
-  async function add({ bio, tags, displayName, ...rest }: any) {
+  async function add({ tags, ...rest }: any) {
     "use server";
     const profile: Profile = {
       ...rest,
-      description: bio,
-      name: displayName,
+      // description: bio,
+      // name: displayName,
       tagMap: tags,
     };
     console.log("addProfile", profile);

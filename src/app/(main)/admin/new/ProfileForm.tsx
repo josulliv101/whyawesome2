@@ -46,7 +46,7 @@ export const profileFormSchema = z.object({
     .max(60, {
       message: "Username must not be longer than 30 characters.",
     }),
-  displayName: z
+  name: z
     .string()
     .min(2, {
       message: "Name must be at least 2 characters.",
@@ -54,7 +54,7 @@ export const profileFormSchema = z.object({
     .max(60, {
       message: "Name must not be longer than 30 characters.",
     }),
-  bio: z.string().max(500).min(4),
+  description: z.string().max(500).min(4),
   pic: z.string().max(200).min(0),
   tags: z
     .array(
@@ -86,7 +86,7 @@ export type ProfileFormValues = z.infer<typeof profileFormSchema>;
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
   profileId: "",
-  bio: "",
+  description: "",
   oinks: 0,
   tags: [] as any, // Record<TagName, boolean>,
   reasons: [],
@@ -112,7 +112,7 @@ export function ProfileForm({ addProfile, profile }: any) {
   });
 
   async function onSubmit(data: ProfileFormValues) {
-    // await addProfile(data);
+    await addProfile(data);
     toast(
       <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
         <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -142,7 +142,7 @@ export function ProfileForm({ addProfile, profile }: any) {
         />
         <FormField
           control={form.control}
-          name="displayName"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
@@ -222,10 +222,10 @@ export function ProfileForm({ addProfile, profile }: any) {
         />
         <FormField
           control={form.control}
-          name="bio"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Tell us a little bit about yourself"
