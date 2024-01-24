@@ -18,7 +18,7 @@ export function Sidebar({ className, hub, tagPrimary }: SidebarProps) {
   const [hubSegment, primaryTagSegment = "person"] = segment.split("/");
 
   return (
-    <div className={cn("w-[240px] pb-12 border-r", className)}>
+    <div className={cn("hidden lg:block w-[240px] pb-12 border-r", className)}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">

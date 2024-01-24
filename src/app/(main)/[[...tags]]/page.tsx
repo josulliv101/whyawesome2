@@ -134,12 +134,12 @@ export default async function Page({
               <div className="flex w-max space-x-4 p-4">
                 {profiles.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0 w-[192px]">
-                    <div className="relative overflow-hidden rounded-md w-[192px] bg-gray-100">
+                    <div className="relative overflow-hidden rounded-md w-[192px] bg-gray-50">
                       <Link href={`/profile/${artwork.id}`} prefetch={false}>
                         <Image
                           src={artwork.pic}
                           alt={`Photo by ${artwork.name}`}
-                          className="aspect-square h-fit w-[192px] object-cover object-center"
+                          className="aspect-square h-fit w-[192px] object-cover object-top" // opacity-80 hover:opacity-100 saturate-150 hover:saturate-100 transition-all duration-500
                           width={150}
                           height={150}
                           priority={true}
