@@ -83,7 +83,7 @@ export function Sidebar({ className, hub, tagPrimary }: SidebarProps) {
         </div>
         <div className="px-3 py-2">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            Explore Colleges & Universities
+            Explore Colleges
           </h2>
           <div className="space-y-1">
             <Button variant="ghost" className="w-full justify-start" asChild>

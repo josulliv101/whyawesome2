@@ -127,7 +127,7 @@ export default async function Page({
       {fetchedData.map(([profiles, count, _1, _2, label], tagIndex) => {
         return (
           <div key={tagIndex} className="">
-            <h2 className="text-2xl font-semibold tracking-tight mb-4">
+            <h2 className="text-lg lg:text-2xl font-semibold tracking-tight mb-4">
               {label}
             </h2>
             <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
