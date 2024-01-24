@@ -115,11 +115,11 @@ export default async function Page({
         </div>
       </div>
 
-      <h2 className="flex items-center text-4xl font-semibold tracking-tight mb-1">
+      <h2 className="flex items-center text-2xl lg:text-4xl font-semibold tracking-tight mb-1">
         {false && hub && hub !== "all" ? `${hub} / ` : ""} discover what&#39;s
         awesome about {tagDefinitionMap[tagPrimary as TagName].plural}.
       </h2>
-      <p className="text-lg text-muted-foreground mb-12">
+      <p className="text-md lg:text-lg text-muted-foreground mb-12">
         Inclusion in the what&#39;s awesome catalog is by invitation only.
         Everyone can vote on what&#39;s awesome.
       </p>
