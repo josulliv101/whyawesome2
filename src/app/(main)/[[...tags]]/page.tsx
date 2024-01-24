@@ -32,7 +32,8 @@ const defaultLayout = [265, 440, 655];
 export default async function Page({
   params: { tags = [] },
 }: ServerSideComponentProp<{ tags?: string[] }>) {
-  const [hub = "all", tagPrimary = "place", ...tagsParam] = tags;
+  const [hubState = "all", tagPrimary = "place", ...tagsParam] = tags;
+  const hub = hubState === "index" ? "all" : hubState;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== "all");
   await new Promise((r) => setTimeout(r, 0));
 
@@ -137,7 +138,7 @@ export default async function Page({
                           <Image
                             src={artwork.pic}
                             alt={`Photo by ${artwork.name}`}
-                            className="aspect-square h-fit w-fit object-cover object-top   transition-all duration-1000 opacity-80 hover:opacity-100"
+                            className="aspect-square h-fit w-fit object-cover object-center transition-all duration-1000 opacity-80 hover:opacity-100"
                             width={150}
                             height={150}
                             priority={index < 6}
