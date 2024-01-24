@@ -80,7 +80,7 @@ export default async function Page({
           {!!hub && hub !== "all" && (
             <div className="flex items-center border rounded-sm text-muted-foreground text-sm">
               <div className="relative w-[40px] h-[40px]">
-                <Link href={`/profile/${hub}`}>
+                <Link href={`/profile/${hub}`} prefetch={false}>
                   {/* <Image
                     className="w-[40px] h-[40px] opacity-75"
                     src="/boston.jpg"
@@ -100,7 +100,9 @@ export default async function Page({
                 </Link>
               </div>
               <div className="px-3 py-0">
-                <Link href={`/profile/${hub}`}>view {hub}&#39;s profile</Link>
+                <Link href={`/profile/${hub}`} prefetch={false}>
+                  view {hub}&#39;s profile
+                </Link>
               </div>
             </div>
           )}
@@ -133,7 +135,7 @@ export default async function Page({
                 {profiles.map((artwork, index) => (
                   <figure key={artwork.id} className="shrink-0">
                     <div className="relative overflow-hidden rounded-md bg-blue-500">
-                      <Link href={`/profile/${artwork.id}`}>
+                      <Link href={`/profile/${artwork.id}`} prefetch={false}>
                         <Image
                           src={artwork.pic}
                           alt={`Photo by ${artwork.name}`}
@@ -147,6 +149,7 @@ export default async function Page({
                     <figcaption className="pt-2 text-xs text-muted-foreground">
                       <Link
                         href={`/admin/edit/${artwork.id}`}
+                        prefetch={false}
                         className="text-foreground"
                       >
                         {artwork.name.substring(0, 30)}
