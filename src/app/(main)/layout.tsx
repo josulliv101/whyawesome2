@@ -46,6 +46,7 @@ import {
 
 import Link from "next/link";
 import { Sidebar } from "@/components/Sidebar";
+import LoginButton from "@/components/LoginButton";
 
 const defaultLayout = [265, 440, 655];
 
@@ -97,32 +98,34 @@ export default function TagsLayout({
             </>
           )}
         </div>
-        <Menubar className="block lg:hidden border-0">
-          <MenubarMenu>
-            <MenubarTrigger>Explore</MenubarTrigger>
-            <MenubarContent>
-              <Command className="min-w-md ">
-                {/* <CommandInput placeholder="Type a command or search..." /> */}
-                <CommandList>
-                  {/* <CommandEmpty>No results found.</CommandEmpty> */}
-                  <CommandGroup heading="Cities">
-                    <CommandItem>
-                      <Link className="w-full" href={`/boston`}>
-                        Boston
-                      </Link>
-                    </CommandItem>
-                    <CommandItem>
-                      <Link className="w-full" href={`/chicago`}>
-                        Chicago
-                      </Link>
-                    </CommandItem>
-                    <CommandItem>
-                      <Link className="w-full" href={`/new-york-city`}>
-                        New York City
-                      </Link>
-                    </CommandItem>
-                  </CommandGroup>
-                  {/* <CommandSeparator />
+
+        <div className="flex items-center">
+          <Menubar className="block lg:hidden border-0">
+            <MenubarMenu>
+              <MenubarTrigger>Explore</MenubarTrigger>
+              <MenubarContent>
+                <Command className="min-w-md ">
+                  {/* <CommandInput placeholder="Type a command or search..." /> */}
+                  <CommandList>
+                    {/* <CommandEmpty>No results found.</CommandEmpty> */}
+                    <CommandGroup heading="Cities">
+                      <CommandItem>
+                        <Link className="w-full" href={`/boston`}>
+                          Boston
+                        </Link>
+                      </CommandItem>
+                      <CommandItem>
+                        <Link className="w-full" href={`/chicago`}>
+                          Chicago
+                        </Link>
+                      </CommandItem>
+                      <CommandItem>
+                        <Link className="w-full" href={`/new-york-city`}>
+                          New York City
+                        </Link>
+                      </CommandItem>
+                    </CommandGroup>
+                    {/* <CommandSeparator />
                   <CommandGroup heading="Settings">
                     <CommandItem>
                       <User className="mr-2 h-4 w-4" />
@@ -140,11 +143,13 @@ export default function TagsLayout({
                       <CommandShortcut>⌘S</CommandShortcut>
                     </CommandItem>
                   </CommandGroup> */}
-                </CommandList>
-              </Command>
-            </MenubarContent>
-          </MenubarMenu>
-        </Menubar>
+                  </CommandList>
+                </Command>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar>
+          {<LoginButton />}
+        </div>
       </div>
       <main className="flex min-h-screen items-start justify-stretch">
         <Sidebar

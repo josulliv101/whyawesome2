@@ -29,10 +29,15 @@ export default async function Page({
           className="rounded-sm object-cover min-h-[300px] min-w-[240px]"
           alt={profile.name}
           src={profile.pic}
-          fill
+          // fill
+          width="220"
+          height="220"
         />
         <div className="flex flex-wrap gap-3">
           {profile.tags
+            .sort((a: { label: string }, b: { label: string }) =>
+              a.label.localeCompare(b.label)
+            )
             .filter((tag) => tag.value !== "person" && tag.value !== "place")
             .map((tag) => (
               <Badge key={tag.value} variant={"secondary"}>
