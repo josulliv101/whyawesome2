@@ -21,6 +21,11 @@ export default function LoginButton() {
       });
   };
 
+  // clientside auth handler has not run yet
+  if (typeof user === "undefined") {
+    return null;
+  }
+
   if (user) {
     return (
       <Button onClick={handleLogout} variant={"ghost"} size={"sm"}>

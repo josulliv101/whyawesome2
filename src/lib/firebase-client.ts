@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 // import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC_oY9QK7-zheXCNQdcU_-LQ37xRiGD-sE",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_API_KEY,
   authDomain: "fir-abc-a965d.firebaseapp.com",
   projectId: "fir-abc-a965d",
   storageBucket: "fir-abc-a965d.appspot.com",

@@ -4,10 +4,10 @@ import { useState, createContext, useContext, PropsWithChildren } from "react";
 import { auth } from "@/lib/firebase-client";
 import { User, onAuthStateChanged } from "firebase/auth";
 
-const Context = createContext<User | null>(null);
+const Context = createContext<User | null | undefined>(undefined);
 
 export function AuthContextProvider({ children }: PropsWithChildren) {
-  const [session, setSession] = useState<User | null>(null);
+  const [session, setSession] = useState<User | null | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   onAuthStateChanged(auth, (user) => {
