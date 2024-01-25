@@ -6,7 +6,7 @@ const getHeaderWidth = (i: number) => {
 
 export default function Loading() {
   return (
-    <div className="relative top-[0px]">
+    <div className="w-full relative top-[0px]">
       <Skeleton className="h-9 w-[140px] mb-12" />
       <div className="space-y-3">
         <Skeleton className="h-8 w-[750px]" />

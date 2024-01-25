@@ -47,6 +47,7 @@ import {
 import Link from "next/link";
 import { Sidebar } from "@/components/Sidebar";
 import LoginButton from "@/components/LoginButton";
+import { config } from "@/lib/config";
 
 const defaultLayout = [265, 440, 655];
 
@@ -80,7 +81,7 @@ export default function TagsLayout({
               alt="whyawesome logo"
               width="24"
               height="24"
-              src="/earth2.jpg"
+              src={config.logo.path}
             />
             <Separator orientation="vertical" className="border-gray-600" />
             <span className="font-semibold text-sm relative top-[0px] border-l-0 pl-0">

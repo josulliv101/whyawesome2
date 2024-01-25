@@ -273,6 +273,7 @@ export interface Reason {
 export interface Profile {
   id: string;
   name: string;
+  shortname?: string;
   pic: string;
   description?: string;
   reasons: Array<Reason>;
