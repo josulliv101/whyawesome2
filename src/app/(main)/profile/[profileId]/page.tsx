@@ -23,8 +23,8 @@ export default async function Page({
 
   console.log("profile", profile);
   return (
-    <div className="flex items-start space-x-12">
-      <div className="relative space-y-4 bg-gray-50 min-w-[240px]">
+    <div className="flex flex-col items-center lg:flex-row lg:items-start space-x-0 lg:space-x-12">
+      <div className="relative flex flex-col items-center justify-center space-y-4 min-w-[240px]">
         <Image
           className="rounded-sm object-cover min-h-[300px] min-w-[240px]"
           alt={profile.name}
@@ -47,7 +47,7 @@ export default async function Page({
         </div>
       </div>
       <div>
-        <h3 className="text-lg font-medium">{profile.name}</h3>
+        <h3 className="text-lg font-medium mt-6 lg:mt-0">{profile.name}</h3>
         <p className="text-sm text-muted-foreground">{profile.description}</p>
         <div className="my-10" />
         <ProfileForm profile={profile} />

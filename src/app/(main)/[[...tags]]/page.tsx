@@ -46,6 +46,13 @@ import { ChevronDownIcon, PlusIcon, StarIcon } from "@radix-ui/react-icons";
 
 const defaultLayout = [265, 440, 655];
 
+function getTruncatedString(str: string, boundary: number = 26) {
+  if (str.length < boundary) {
+    return str;
+  }
+  return `${str.substring(0, boundary)}...`;
+}
+
 export default async function Page({
   params: { tags = [] },
 }: ServerSideComponentProp<{ tags?: string[] }>) {
@@ -119,7 +126,7 @@ export default async function Page({
               <div className="px-3 py-0">
                 <Button variant="default" asChild>
                   <Link href={`/profile/${hub}`} prefetch={false}>
-                    view {hub}&#39;s profile
+                    {hub}&#39;s profile
                   </Link>
                 </Button>
               </div>
@@ -171,8 +178,22 @@ export default async function Page({
                             </Link>
                           </TooltipTrigger>
                           <TooltipContent>
-                            <p>{artwork.name}</p>
-                            <p>Click to view full profile</p>
+                            <p className="text-lg">{artwork.name}</p>
+                            <p>Click image below to view full profile</p>
+                            <p className="text-muted-foreground">
+                              hint: click the{" "}
+                              <span className="inline-flex items-center rounded-sm border px-2 py-1">
+                                <Image
+                                  alt="whyawesome logo"
+                                  width="12"
+                                  height="12"
+                                  src={config.logo.path}
+                                  className="relative mr-2 font-normal"
+                                />{" "}
+                                name badge
+                              </span>{" "}
+                              to view what's most awesome
+                            </p>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -189,7 +210,7 @@ export default async function Page({
                         {/* <Link className="" href={`/profile/${artwork.id}`}>
                           @{artwork.id}
                         </Link> */}
-                        <div className="w-full absolute__ bottom-0 keft-0 border flex items-center space-x-1 pr-1 rounded-md bg-white text-secondary-foreground">
+                        <div className="w-full absolute__ bottom-0 keft-0 border flex items-center space-x-1 pr-0 rounded-md bg-white text-secondary-foreground">
                           {/* <Separator
                             orientation="vertical"
                             className="h-[16px]"
@@ -198,18 +219,19 @@ export default async function Page({
                             <DropdownMenuTrigger asChild>
                               <Button
                                 variant="ghost"
-                                className="h-4.5 pl-4 pr-0.5 py-1 shadow-none text-sm w-full"
+                                className="h-4.5 pl-0 pr-0 py-1 shadow-none text-sm w-full"
                                 size={"default"}
                               >
                                 <div
                                   className={
-                                    artwork.name.length > 24
+                                    artwork.name.length > 20
                                       ? "text-xs"
                                       : "text-sm"
                                   }
                                 >
-                                  {artwork.shortname?.substring(0, 30) ||
-                                    artwork.name.substring(0, 30)}
+                                  {!!artwork.shortname
+                                    ? getTruncatedString(artwork.shortname)
+                                    : getTruncatedString(artwork.name)}
                                   <Separator
                                     orientation="horizontal"
                                     className="my-0.5 opacity-0"

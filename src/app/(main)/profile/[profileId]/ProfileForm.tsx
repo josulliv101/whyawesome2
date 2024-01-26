@@ -61,9 +61,9 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
                       return (
                         <FormItem
                           key={item.id}
-                          className="flex flex-row items-start space-x-4 lg:space-x-10 space-y-0 border-b pb-8"
+                          className="relative flex flex-col lg:flex-row items-start space-x-4 lg:space-x-10 space-y-0 border-b pb-8"
                         >
-                          <div className="flex items-center border rounded-full px-4 py-2 space-x-3">
+                          <div className="mb-6 lg:mb-0 flex items-center border rounded-full px-4 py-2 space-x-3">
                             <Image
                               alt="whyawesome logo"
                               width="32"
@@ -96,7 +96,7 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
                             <FormLabel className="text-base">
                               {item.reason}
                             </FormLabel>
-                            <div className="flex items-center justify-end">
+                            <div className="flex items-center justify-start">
                               <div className="flex items-center space-x-2 text-sm">
                                 <p className="text-muted-foreground">
                                   contributed by
@@ -130,20 +130,22 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
                               </div>
                             </div>
                           </div>{" "}
-                          <FormControl>
-                            <Switch
-                              checked={field.value?.includes(item)}
-                              onCheckedChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...field.value, item.id])
-                                  : field.onChange(
-                                      field.value?.filter(
-                                        (value) => value !== item
-                                      )
-                                    );
-                              }}
-                            />
-                          </FormControl>
+                          <div className="absolute lg:static top-4 right-0">
+                            <FormControl>
+                              <Switch
+                                checked={field.value?.includes(item)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, item.id])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== item
+                                        )
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                          </div>
                         </FormItem>
                       );
                     }}
