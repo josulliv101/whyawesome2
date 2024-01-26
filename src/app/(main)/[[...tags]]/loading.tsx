@@ -20,7 +20,7 @@ export default function Loading() {
             {[...Array(4)].map((_, j) => (
               <Skeleton
                 key={j}
-                className="h-[200px] w-[210px]  mr-4 overflow-auto px-2"
+                className="h-[200px] w-[210px] min-w-[210px]  mr-4 overflow-auto px-2"
               />
             ))}
           </div>

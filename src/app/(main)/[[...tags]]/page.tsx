@@ -155,9 +155,9 @@ export default async function Page({
                 {profiles.map((artwork, index) => (
                   <figure
                     key={artwork.id}
-                    className="relative shrink-0 w-[192px] overflow-hidden"
+                    className="relative shrink-0 w-[192px] rounded-sm overflow-hidden"
                   >
-                    <div className="relative overflow-hidden rounded-md w-[192px] bg-gray-50">
+                    <div className="relative overflow-hidden rounded-md h-[192px] w-[192px] bg-gray-50">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger>
@@ -192,7 +192,7 @@ export default async function Page({
                                 />{" "}
                                 name badge
                               </span>{" "}
-                              to view what's most awesome
+                              to view what&#39;s most awesome
                             </p>
                           </TooltipContent>
                         </Tooltip>
