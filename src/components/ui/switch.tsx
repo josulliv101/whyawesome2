@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as SwitchPrimitives from "@radix-ui/react-switch"
-
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import * as SwitchPrimitives from "@radix-ui/react-switch";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
+import { config } from "@/lib/config";
 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
@@ -19,11 +20,18 @@ const Switch = React.forwardRef<
   >
     <SwitchPrimitives.Thumb
       className={cn(
-        "pointer-events-none block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+        "pointer-events-none flex items-center justify-center grayscale h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 opacity-75 data-[state=checked]:grayscale-0 data-[state=checked]:opacity-100"
       )}
-    />
+    >
+      <Image
+        alt="whyawesome logo"
+        width="14"
+        height="14"
+        src={config.logo.path}
+      />
+    </SwitchPrimitives.Thumb>
   </SwitchPrimitives.Root>
-))
-Switch.displayName = SwitchPrimitives.Root.displayName
+));
+Switch.displayName = SwitchPrimitives.Root.displayName;
 
-export { Switch }
+export { Switch };
