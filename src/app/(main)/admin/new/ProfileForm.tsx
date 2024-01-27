@@ -326,7 +326,7 @@ export function ProfileForm({ addProfile, profile }: any) {
                   <div className="">
                     {suggestions.map((suggestion, i) => {
                       return (
-                        <div>
+                        <div key={i}>
                           #{i}{" "}
                           <Button
                             onClick={() =>
