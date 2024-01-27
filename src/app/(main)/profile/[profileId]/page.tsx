@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import admin from "firebase-admin";
 import Image from "next/image";
-import { fetchProfile, updateReasons } from "@/lib/firebase";
+import { fetchProfile, getCurrentUser, updateReasons } from "@/lib/firebase";
 import { Profile, ServerSideComponentProp } from "@/lib/types";
 import {
   FormControl,
@@ -21,6 +21,8 @@ import LoginAlert from "./LoginAlert";
 export default async function Page({
   params: { profileId },
 }: ServerSideComponentProp<{ profileId?: string }>) {
+  const user = await getCurrentUser();
+
   async function onSubmit(profileId: string, uid: string, reasons: string[]) {
     "use server";
     return await updateReasons(profileId, uid, reasons);
@@ -29,9 +31,9 @@ export default async function Page({
   if (!profileId) {
     return notFound();
   }
-  const profile: Profile = await fetchProfile(profileId);
+  const profile: Profile = await fetchProfile(profileId, user?.uid);
 
-  console.log("profile", profile);
+  console.log("profile", profile, user?.uid);
   return (
     <div className="flex flex-col items-center md:flex-row md:items-start space-x-0 md:space-x-12">
       <div className="relative flex flex-col items-center justify-center space-y-4 min-w-[240px]">

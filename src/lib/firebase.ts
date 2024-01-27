@@ -100,7 +100,7 @@ export async function addProfile({ profileId, reasons, ...profile }: any) {
   await db.collection("entity").doc(profileId).set(profile);
 }
 
-export async function fetchProfile(profileId: string) {
+export async function fetchProfile(profileId: string, uid?: string) {
   if (!profileId) {
     throw new Error("profile id is required.");
   }
@@ -108,12 +108,24 @@ export async function fetchProfile(profileId: string) {
   const reasonsSnapshot = await db
     .collection(`entity/${profileId}/whyawesome`)
     .get();
+  console.log("UID", uid, profileId);
+  let userVotesSnapshot;
+  if (uid) {
+    userVotesSnapshot = await db
+      .collection("entity")
+      .doc(profileId)
+      .collection("votes")
+      .doc(uid)
+      .get();
+  }
 
   const reasons: Profile["reasons"] = [];
   reasonsSnapshot.forEach((doc: any) =>
     reasons.push({ id: doc.id, ...doc.data() })
   );
 
+  const currentUserVotes = userVotesSnapshot ? userVotesSnapshot.data() : {};
+  // console.log("...", JSON.stringify(currentUserVotes));
   const {
     description,
     name,
@@ -130,6 +142,7 @@ export async function fetchProfile(profileId: string) {
     reasons: reasons.sort((a, b) => {
       return b.votes - a.votes;
     }),
+    currentUserVotes: currentUserVotes,
   };
 }
 

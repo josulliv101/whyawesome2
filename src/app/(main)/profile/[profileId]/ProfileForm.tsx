@@ -76,7 +76,7 @@ export default function ProfileForm({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      reasons: profile.reasons.map((item) => item.id),
+      reasons: Object.keys(profile.currentUserVotes.voteMap),
     },
   });
 

@@ -20,7 +20,7 @@ const Switch = React.forwardRef<
   >
     <SwitchPrimitives.Thumb
       className={cn(
-        "pointer-events-none flex items-center justify-center grayscale h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 opacity-75 data-[state=checked]:grayscale-0 data-[state=checked]:opacity-100"
+        "pointer-events-none flex items-center justify-center grayscale h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0 data-[state=checked]:grayscale-0"
       )}
     >
       <Image
@@ -28,6 +28,9 @@ const Switch = React.forwardRef<
         width="14"
         height="14"
         src={config.logo.path}
+        className={`opacity-${
+          props.checked ? 100 : 0
+        } transition-opacity duration-300`}
       />
     </SwitchPrimitives.Thumb>
   </SwitchPrimitives.Root>

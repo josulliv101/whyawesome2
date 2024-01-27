@@ -284,4 +284,7 @@ export interface Profile {
   oinks?: number;
   tags: Array<{ label: string; value: string }>;
   hubTagMap?: Record<TagName, boolean>;
+  currentUserVotes: {
+    voteMap: Record<string, boolean>;
+  };
 }
