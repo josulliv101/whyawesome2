@@ -7,7 +7,7 @@ import { SessionCookieOptions, getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
 import admin from "firebase-admin";
-import { Profile } from "./types";
+import { Profile, Reason } from "./types";
 import { ProfileForm } from "@/app/(main)/admin/new/ProfileForm";
 
 // src/lib/firebase/firebase-admin.ts
@@ -98,6 +98,18 @@ export async function addProfile({ profileId, reasons, ...profile }: any) {
     throw new Error("profile id is required.");
   }
   await db.collection("entity").doc(profileId).set(profile);
+
+  // Add any new reasons to the collection
+  reasons
+    .filter((reason: Reason) => !reason?.id)
+    .forEach(async (reason: Reason) => {
+      await db
+        .collection("entity")
+        .doc(profileId)
+        .collection("whyawesome")
+        .add(reason);
+    });
+  console.log(`reasons added.`);
 }
 
 export async function fetchProfile(profileId: string, uid?: string) {
