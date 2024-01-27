@@ -17,6 +17,8 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleUserRound, Info, Terminal } from "lucide-react";
 import Link from "next/link";
 import LoginAlert from "./LoginAlert";
+import { revalidatePath } from "next/cache";
+import { Button } from "@/components/ui/button";
 
 export default async function Page({
   params: { profileId },
@@ -25,7 +27,8 @@ export default async function Page({
 
   async function onSubmit(profileId: string, uid: string, reasons: string[]) {
     "use server";
-    return await updateReasons(profileId, uid, reasons);
+    await updateReasons(profileId, uid, reasons);
+    revalidatePath(`/profile/${profileId}`, "page");
   }
 
   if (!profileId) {
@@ -45,7 +48,7 @@ export default async function Page({
           width="220"
           height="220"
         />
-        <div className="flex flex-wrap gap-3">
+        {/* <div className="flex flex-wrap gap-3">
           {profile.tags
             .sort((a: { label: string }, b: { label: string }) =>
               a.label.localeCompare(b.label)
@@ -56,10 +59,33 @@ export default async function Page({
                 {tag.value}
               </Badge>
             ))}
-        </div>
+        </div> */}
       </div>
-      <div>
-        <h3 className="text-lg font-medium mt-6 md:mt-0">{profile.name}</h3>
+      <div className="w-full">
+        <h3 className="w-full flex items-center justify-between text-4xl font-medium mt-6 md:mt-0">
+          {profile.name}
+          {user?.customClaims?.admin === true ? (
+            <Button variant="secondary" size="sm">
+              <Link href={`/admin/edit/${profileId}`}>edit profile</Link>
+            </Button>
+          ) : null}
+        </h3>
+        <div className="flex flex-wrap gap-3 py-4">
+          {profile.tags
+            .sort((a: { label: string }, b: { label: string }) =>
+              a.label.localeCompare(b.label)
+            )
+            .filter((tag) => tag.value !== "person" && tag.value !== "place")
+            .map((tag) => (
+              <Badge
+                key={tag.value}
+                variant={"outline"}
+                className="text-sm px-2.5 py-1.5"
+              >
+                {tag.value}
+              </Badge>
+            ))}
+        </div>
         <p className="text-sm text-muted-foreground">{profile.description}</p>
         <LoginAlert name={profile.name} />
         <ProfileForm profile={profile} onSubmit={onSubmit} />

@@ -131,9 +131,9 @@ export default function ProfileForm({
                       return (
                         <FormItem
                           key={item.id}
-                          className="flex flex-row items-start space-x-3 space-y-0"
+                          className="flex flex-row items-start v hover:bg-gray-100 space-x-5 space-y-0 py-2"
                         >
-                          <FormControl>
+                          <FormControl className="relative top-1 left-1">
                             <Switch
                               checked={field.value?.includes(item.id)}
                               onCheckedChange={(checked) => {
@@ -147,7 +147,7 @@ export default function ProfileForm({
                               }}
                             />
                           </FormControl>
-                          <FormLabel className="font-normal">
+                          <FormLabel className="cursor-pointer font-normal text-lg pt-0 relative -top-1">
                             {item.reason}
                           </FormLabel>
                         </FormItem>

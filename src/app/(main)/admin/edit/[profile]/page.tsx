@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Profile } from "@/lib/types";
-import { addProfile, fetchProfile } from "@/lib/firebase";
+import { addProfile, fetchProfile, getCurrentUser } from "@/lib/firebase";
 import { revalidatePath } from "next/cache";
 import { ProfileForm } from "../../new/ProfileForm";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,8 @@ export default async function Page({
   params: { profile: string };
 }) {
   const data = await fetchProfile(profile);
+  const user = await getCurrentUser();
+  console.log("user?.customClaims", user?.customClaims);
 
   async function onSubmit({ tags, ...rest }: any) {
     "use server";

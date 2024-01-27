@@ -137,28 +137,37 @@ export default async function Page({
 
       <h2 className="flex items-center text-xl lg:text-4xl font-semibold tracking-tight mb-1">
         {false && hub && hub !== "all" ? `${hub} / ` : ""} Discover what&#39;s
-        awesome about {tagDefinitionMap[tagPrimary as TagName].plural}.
+        awesome about {tagDefinitionMap[tagPrimary as TagName].plural}{" "}
+        {hub && hub !== "all" ? (
+          <span className="pl-2">
+            <Link className="" href={`/profile/${hub}`}>
+              @{hub}
+            </Link>
+          </span>
+        ) : (
+          "."
+        )}
       </h2>
       <p className="text-md lg:text-lg text-muted-foreground mb-12">
         Inclusion in the what&#39;s awesome catalog is by invitation only.
         Everyone can vote on what&#39;s awesome.
       </p>
       <div className="hidden flex items-center justify-end pb-0"></div>
-      {fetchedData.map(([profiles, count, _1, _2, label], tagIndex) => {
-        return (
-          <div key={tagIndex} className="">
-            <h2 className="text-lg lg:text-2xl font-semibold tracking-tight mb-4">
-              {label}
-            </h2>
-            <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
-              <div className="flex w-max space-x-4 p-4">
-                {profiles.map((artwork, index) => (
-                  <figure
-                    key={artwork.id}
-                    className="relative shrink-0 w-[192px] rounded-sm overflow-hidden"
-                  >
-                    <div className="relative overflow-hidden rounded-md h-[192px] w-[192px] bg-gray-50">
-                      <TooltipProvider>
+      <TooltipProvider delayDuration={0}>
+        {fetchedData.map(([profiles, count, _1, _2, label], tagIndex) => {
+          return (
+            <div key={tagIndex} className="">
+              <h2 className="text-lg lg:text-2xl font-semibold tracking-tight mb-4">
+                {label}
+              </h2>
+              <ScrollArea className="whitespace-nowrap rounded-md border bg-white mb-12">
+                <div className="flex w-max space-x-4 p-4">
+                  {profiles.map((artwork, index) => (
+                    <figure
+                      key={artwork.id}
+                      className="relative shrink-0 w-[192px] rounded-sm overflow-hidden"
+                    >
+                      <div className="relative overflow-hidden rounded-md h-[192px] w-[192px] bg-gray-50">
                         <Tooltip>
                           <TooltipTrigger>
                             <Link
@@ -196,159 +205,159 @@ export default async function Page({
                             </p>
                           </TooltipContent>
                         </Tooltip>
-                      </TooltipProvider>
-                    </div>
-                    <figcaption className="pt-2 text-sm text-muted-foreground w-[192px]">
-                      <Link
-                        href={`/admin/edit/${artwork.id}`}
-                        prefetch={false}
-                        className="text-foreground hidden"
-                      >
-                        {artwork.name.substring(0, 30)}
-                      </Link>
-                      <div className="mt-1 flex items-center justify-start">
-                        {/* <Link className="" href={`/profile/${artwork.id}`}>
+                      </div>
+                      <figcaption className="pt-2 text-sm text-muted-foreground w-[192px]">
+                        <Link
+                          href={`/admin/edit/${artwork.id}`}
+                          prefetch={false}
+                          className="text-foreground hidden"
+                        >
+                          {artwork.name.substring(0, 30)}
+                        </Link>
+                        <div className="mt-1 flex items-center justify-start">
+                          {/* <Link className="" href={`/profile/${artwork.id}`}>
                           @{artwork.id}
                         </Link> */}
-                        <div className="w-full absolute__ bottom-0 keft-0 border flex items-center space-x-1 pr-0 rounded-md bg-white text-secondary-foreground">
-                          {/* <Separator
+                          <div className="w-full absolute__ bottom-0 keft-0 border flex items-center space-x-1 pr-0 rounded-md bg-white text-secondary-foreground">
+                            {/* <Separator
                             orientation="vertical"
                             className="h-[16px]"
                           /> */}
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                className="h-4.5 pl-0 pr-0 py-1 shadow-none text-sm w-full"
-                                size={"default"}
-                              >
-                                <div
-                                  className={
-                                    artwork.name.length > 20
-                                      ? "text-xs"
-                                      : "text-sm"
-                                  }
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  className="h-4.5 pl-0 pr-0 py-1 shadow-none text-sm w-full"
+                                  size={"default"}
                                 >
-                                  {!!artwork.shortname
-                                    ? getTruncatedString(artwork.shortname)
-                                    : getTruncatedString(artwork.name)}
-                                  <Separator
-                                    orientation="horizontal"
-                                    className="my-0.5 opacity-0"
-                                  />
-                                  <span className="inline-flex mt-0 items-center text-xs text-muted-foreground">
-                                    <Image
-                                      alt="whyawesome logo"
-                                      width="14"
-                                      height="14"
-                                      src={config.logo.path}
-                                      className="relative mr-2 font-normal"
-                                    />{" "}
-                                    {artwork.oinks} votes
-                                  </span>
-                                </div>
-                              </Button>
-                              {/* <Button
+                                  <div
+                                    className={
+                                      artwork.name.length > 20
+                                        ? "text-xs"
+                                        : "text-sm"
+                                    }
+                                  >
+                                    {!!artwork.shortname
+                                      ? getTruncatedString(artwork.shortname)
+                                      : getTruncatedString(artwork.name)}
+                                    <Separator
+                                      orientation="horizontal"
+                                      className="my-0.5 opacity-0"
+                                    />
+                                    <span className="inline-flex mt-0 items-center text-xs text-muted-foreground">
+                                      <Image
+                                        alt="whyawesome logo"
+                                        width="14"
+                                        height="14"
+                                        src={config.logo.path}
+                                        className="relative mr-2 font-normal"
+                                      />{" "}
+                                      {artwork.oinks} votes
+                                    </span>
+                                  </div>
+                                </Button>
+                                {/* <Button
                                 variant="secondary"
                                 className="h-4.5 px-0 py-1 bg-secondary shadow-none text-xs"
                                 size={"sm"}
                               >
                                 <ChevronDownIcon className="h-6 w-6 text-secondary-foreground" />
                               </Button> */}
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                              align="center"
-                              side="top"
-                              //alignOffset={-5}
-                              className="w-[400px]"
-                              forceMount
-                            >
-                              <DropdownMenuLabel>
-                                {artwork.name}
-                              </DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuCheckboxItem checked>
-                                Future Ideas
-                              </DropdownMenuCheckboxItem>
-                              <DropdownMenuCheckboxItem>
-                                My Stack
-                              </DropdownMenuCheckboxItem>
-                              <DropdownMenuCheckboxItem>
-                                Inspiration
-                              </DropdownMenuCheckboxItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem>
-                                <PlusIcon className="mr-2 h-4 w-4" /> Create
-                                List
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                        <HoverCard>
-                          <HoverCardTrigger href={`/profile/${artwork.id}`}>
-                            <Badge
-                              className="hidden absolute rounded-sm bottom-[32px] right-[-16px] z-50 bg-white"
-                              variant={"outline"}
-                            >
-                              <Image
-                                alt="whyawesome logo"
-                                width="16"
-                                height="16"
-                                src={config.logo.path}
-                                className="mr-1 relative left-[-6px]"
-                              />
-                              <span className="relative left-[-6px]">
-                                {artwork.oinks}
-                              </span>
-                            </Badge>
-                          </HoverCardTrigger>
-                          <HoverCardContent
-                            sideOffset={24}
-                            side="top"
-                            className="w-[600px] text-lg"
-                          >
-                            <div className="flex px-4 pt-2 pb-2 space-x-12 w-[500px] min-h-[162px]">
-                              <div className="relative min-w-[68px] w-[68px] h-[68px]">
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent
+                                align="center"
+                                side="top"
+                                //alignOffset={-5}
+                                className="w-[400px]"
+                                forceMount
+                              >
+                                <DropdownMenuLabel>
+                                  {artwork.name}
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuCheckboxItem checked>
+                                  Future Ideas
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem>
+                                  My Stack
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuCheckboxItem>
+                                  Inspiration
+                                </DropdownMenuCheckboxItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                  <PlusIcon className="mr-2 h-4 w-4" /> Create
+                                  List
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                          <HoverCard>
+                            <HoverCardTrigger href={`/profile/${artwork.id}`}>
+                              <Badge
+                                className="hidden absolute rounded-sm bottom-[32px] right-[-16px] z-50 bg-white"
+                                variant={"outline"}
+                              >
                                 <Image
-                                  className="object-cover"
-                                  alt={artwork.name}
+                                  alt="whyawesome logo"
+                                  width="16"
+                                  height="16"
                                   src={config.logo.path}
-                                  fill
+                                  className="mr-1 relative left-[-6px]"
                                 />
-                                <p className="hidden text-sm font-semibold mt-[74px]">
-                                  {artwork.oinks} votes
-                                </p>
-                              </div>
-                              <div>
-                                <p className="whitespace-normal pr-2">
-                                  <p>
-                                    <strong>{artwork.name}</strong>
+                                <span className="relative left-[-6px]">
+                                  {artwork.oinks}
+                                </span>
+                              </Badge>
+                            </HoverCardTrigger>
+                            <HoverCardContent
+                              sideOffset={24}
+                              side="top"
+                              className="w-[600px] text-lg"
+                            >
+                              <div className="flex px-4 pt-2 pb-2 space-x-12 w-[500px] min-h-[162px]">
+                                <div className="relative min-w-[68px] w-[68px] h-[68px]">
+                                  <Image
+                                    className="object-cover"
+                                    alt={artwork.name}
+                                    src={config.logo.path}
+                                    fill
+                                  />
+                                  <p className="hidden text-sm font-semibold mt-[74px]">
+                                    {artwork.oinks} votes
                                   </p>
-                                  <p>{artwork.description} </p>
-                                  <p className="absolute top-2 right-4 text-muted-foreground text-sm space-x-4">
-                                    {/* <span>
+                                </div>
+                                <div>
+                                  <p className="whitespace-normal pr-2">
+                                    <p>
+                                      <strong>{artwork.name}</strong>
+                                    </p>
+                                    <p>{artwork.description} </p>
+                                    <p className="absolute top-2 right-4 text-muted-foreground text-sm space-x-4">
+                                      {/* <span>
                                       #
                                       {artwork.id
                                         .replaceAll(/[\s'-]/g, "")
                                         .toLocaleLowerCase()}
                                     </span> */}
-                                    <span>#whatsawesome</span>
+                                      <span>#whatsawesome</span>
+                                    </p>
                                   </p>
-                                </p>
+                                </div>
                               </div>
-                            </div>
-                          </HoverCardContent>
-                        </HoverCard>
-                      </div>
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
-              <ScrollBar orientation="horizontal" />
-            </ScrollArea>
-          </div>
-        );
-      })}
+                            </HoverCardContent>
+                          </HoverCard>
+                        </div>
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
+            </div>
+          );
+        })}
+      </TooltipProvider>
     </>
   );
 }
