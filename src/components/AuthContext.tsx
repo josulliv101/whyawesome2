@@ -6,28 +6,15 @@ import { User, onAuthStateChanged } from "firebase/auth";
 
 const Context = createContext<User | null | undefined>(undefined);
 
-export function AuthContextProvider({ children }: PropsWithChildren) {
-  const [session, setSession] = useState<User | null | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
+export function AuthContextProvider({
+  children,
+  user,
+}: PropsWithChildren<{ user?: any }>) {
+  const [session, setSession] = useState<User | null | undefined>(user);
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setSession(user);
-    } else {
-      setSession(null);
-    }
-    setLoading(false);
-  });
+  onAuthStateChanged(auth, (u) => setSession(!!u ? u : null));
 
-  if (false && loading) {
-    return (
-      <main className={""}>
-        <div>loading</div>
-      </main>
-    );
-  } else {
-    return <Context.Provider value={session}>{children}</Context.Provider>;
-  }
+  return <Context.Provider value={session}>{children}</Context.Provider>;
 }
 
 export function useAuthContext() {

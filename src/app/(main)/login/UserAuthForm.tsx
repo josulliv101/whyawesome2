@@ -51,6 +51,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
+              onChange={(ev) => setEmail(ev.target.value)}
             />
           </div>
           <Button disabled={isLoading}>

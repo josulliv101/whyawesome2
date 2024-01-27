@@ -264,6 +264,10 @@ export function getHubTagMap(
   );
 }
 
+export type APIResponse<T = object> =
+  | { success: true; data: T }
+  | { success: false; error: string };
+
 export interface Reason {
   id?: string;
   reason: string;

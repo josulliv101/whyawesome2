@@ -13,9 +13,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { auth } from "@/lib/firebase-client";
-import { signInWithEmailAndPassword } from "firebase/auth";
+// import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+import { signInWithEmailAndPassword, signOut } from "@/lib/firebase-auth";
 
 export function CardsCreateAccount() {
   const [email, setEmail] = useState("");
@@ -24,16 +26,17 @@ export function CardsCreateAccount() {
   const router = useRouter();
 
   const handleSubmit = async () => {
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((...args) => {
-        console.log("args", ...args);
-        router.push("/", { scroll: true });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
+    const isSuccess = await signInWithEmailAndPassword(auth, email, password);
+    if (isSuccess) router.push("/");
+    // .then((...args) => {
+    //   console.log("args", ...args);
+    //   router.push("/", { scroll: true });
+    // })
+    // .catch((error) => {
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+    //   console.log(errorCode, errorMessage);
+    // });
   };
   return (
     <Card>

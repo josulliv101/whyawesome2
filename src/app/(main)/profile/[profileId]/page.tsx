@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
+import admin from "firebase-admin";
 import Image from "next/image";
-import { fetchProfile } from "@/lib/firebase";
+import { fetchProfile, updateReasons } from "@/lib/firebase";
 import { Profile, ServerSideComponentProp } from "@/lib/types";
 import {
   FormControl,
@@ -12,10 +13,19 @@ import { Switch } from "@/components/ui/switch";
 import ProfileForm from "./ProfileForm";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { CircleUserRound, Info, Terminal } from "lucide-react";
+import Link from "next/link";
+import LoginAlert from "./LoginAlert";
 
 export default async function Page({
   params: { profileId },
 }: ServerSideComponentProp<{ profileId?: string }>) {
+  async function onSubmit(profileId: string, uid: string, reasons: string[]) {
+    "use server";
+    return await updateReasons(profileId, uid, reasons);
+  }
+
   if (!profileId) {
     return notFound();
   }
@@ -23,7 +33,7 @@ export default async function Page({
 
   console.log("profile", profile);
   return (
-    <div className="flex flex-col items-center lg:flex-row lg:items-start space-x-0 lg:space-x-12">
+    <div className="flex flex-col items-center md:flex-row md:items-start space-x-0 md:space-x-12">
       <div className="relative flex flex-col items-center justify-center space-y-4 min-w-[240px]">
         <Image
           className="rounded-sm object-cover min-h-[300px] min-w-[240px]"
@@ -47,10 +57,10 @@ export default async function Page({
         </div>
       </div>
       <div>
-        <h3 className="text-lg font-medium mt-6 lg:mt-0">{profile.name}</h3>
+        <h3 className="text-lg font-medium mt-6 md:mt-0">{profile.name}</h3>
         <p className="text-sm text-muted-foreground">{profile.description}</p>
-        <div className="my-10" />
-        <ProfileForm profile={profile} />
+        <LoginAlert name={profile.name} />
+        <ProfileForm profile={profile} onSubmit={onSubmit} />
       </div>
     </div>
   );

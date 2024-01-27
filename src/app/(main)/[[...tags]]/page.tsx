@@ -67,7 +67,7 @@ export default async function Page({
 
   const activeTags = hubTagsMap[tagPrimary as "person" | "place"];
 
-  const defaultActiveTags = activeTags.filter(
+  const defaultActiveTags = activeTags?.filter(
     (tag) => profile?.hubTagMap?.[tag] === true
   );
   console.log("filteredActiveTags", tagsParam, defaultActiveTags);

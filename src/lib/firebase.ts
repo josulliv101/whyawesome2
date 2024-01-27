@@ -1,26 +1,96 @@
+import "server-only";
+
+import { cookies } from "next/headers";
+
+import { initializeApp, getApps, cert } from "firebase-admin/app";
+import { SessionCookieOptions, getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
+
 import admin from "firebase-admin";
 import { Profile } from "./types";
 import { ProfileForm } from "@/app/(main)/admin/new/ProfileForm";
+
+// src/lib/firebase/firebase-admin.ts
 
 const serviceAccount = JSON.parse(
   process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
 );
 
-const initializeApp = () => {
-  return admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as any),
-  });
-};
+export const firebaseApp =
+  getApps().find((it) => it.name === "firebase-admin-app") ||
+  initializeApp(
+    {
+      credential: cert(serviceAccount),
+    },
+    "firebase-admin-app"
+  );
+export const auth = getAuth(firebaseApp);
 
-export const getFirebaseAdminApp = () => {
-  if (admin.apps.length > 0) {
-    return admin.apps[0] as admin.app.App;
+export async function isUserAuthenticated(
+  session: string | undefined = undefined
+) {
+  const _session = session ?? (await getSession());
+  if (!_session) return false;
+
+  try {
+    const isRevoked = !(await auth.verifySessionCookie(_session, true));
+    return !isRevoked;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+export async function getCurrentUser() {
+  const session = await getSession();
+
+  if (!(await isUserAuthenticated(session))) {
+    return null;
   }
 
-  return initializeApp();
-};
+  const decodedIdToken = await auth.verifySessionCookie(session!);
+  const currentUser = await auth.getUser(decodedIdToken.uid);
 
-export const db = admin.firestore(getFirebaseAdminApp());
+  return currentUser;
+}
+
+async function getSession() {
+  try {
+    return cookies().get("__session")?.value;
+  } catch (error) {
+    return undefined;
+  }
+}
+
+export async function createSessionCookie(
+  idToken: string,
+  sessionCookieOptions: SessionCookieOptions
+) {
+  return auth.createSessionCookie(idToken, sessionCookieOptions);
+}
+
+export async function revokeAllSessions(session: string) {
+  const decodedIdToken = await auth.verifySessionCookie(session);
+
+  return await auth.revokeRefreshTokens(decodedIdToken.sub);
+}
+
+// const initializeApp = () => {
+//   return admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount as any),
+//   });
+// };
+
+// export const getFirebaseAdminApp = () => {
+//   if (admin.apps.length > 0) {
+//     return admin.apps[0] as admin.app.App;
+//   }
+
+//   return initializeApp();
+// };
+
+// export const db = admin.firestore(getFirebaseAdminApp());
+export const db = getFirestore(firebaseApp);
 
 export async function addProfile({ profileId, reasons, ...profile }: any) {
   console.log("formData", profileId, profile);
@@ -104,4 +174,29 @@ export async function fetchEntities(
     tags.join(" / "),
   ] as [Array<Profile>, number, number, number, string];
   return data;
+}
+
+export async function updateReasons(
+  profileId: string,
+  userId: string,
+  reasonIds: string[] = []
+) {
+  console.log("updateReasons", userId, reasonIds);
+  if (!userId) {
+    throw new Error("user id is required.");
+  }
+  if (!profileId) {
+    throw new Error("profile id is required.");
+  }
+  await db
+    .collection(`entity/${profileId}/votes`)
+    .doc(userId)
+    .set({
+      voteMap: reasonIds.reduce((acc, reasonId) => {
+        return {
+          ...acc,
+          [reasonId]: true,
+        };
+      }, {}),
+    });
 }

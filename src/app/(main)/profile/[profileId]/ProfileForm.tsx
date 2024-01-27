@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import { Profile, ServerSideComponentProp } from "@/lib/types";
 import {
   Form,
@@ -17,42 +19,110 @@ import {
   ProfileFormValues,
   profileFormSchema,
 } from "../../admin/new/ProfileForm";
-import { useForm } from "react-hook-form";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getHubColor } from "@/lib/utils";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useAuthContext } from "@/components/AuthContext";
+import { updateReasons } from "@/lib/firebase";
 
-export default function ProfileForm({ profile }: { profile: Profile }) {
-  console.log("profile", profile);
+const items = [
+  {
+    id: "recents",
+    label: "Recents",
+  },
+  {
+    id: "home",
+    label: "Home",
+  },
+  {
+    id: "applications",
+    label: "Applications",
+  },
+  {
+    id: "desktop",
+    label: "Desktop",
+  },
+  {
+    id: "downloads",
+    label: "Downloads",
+  },
+  {
+    id: "documents",
+    label: "Documents",
+  },
+] as const;
 
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
-    defaultValues: profile as any, // TODO fix typing
-    mode: "onChange",
+const FormSchema = z.object({
+  reasons: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "You have to select at least one item.",
+  }),
+});
+
+export default function ProfileForm({
+  profile,
+  onSubmit,
+}: {
+  profile: Profile;
+  onSubmit: any;
+}) {
+  const user = useAuthContext();
+  console.log("profile", onSubmit, profile, user);
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      reasons: profile.reasons.map((item) => item.id),
+    },
   });
 
-  async function onSubmit(data: ProfileFormValues) {
-    console.log("data", data);
+  async function onSubmitFoobar(data: z.infer<typeof FormSchema>) {
+    if (!user) {
+      return toast(
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">
+            Please login to vote on whats awesome.
+          </code>
+        </pre>
+      );
+    }
+    await onSubmit(profile.id, user.uid, data.reasons);
+    toast(
+      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+      </pre>
+    );
   }
 
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmitFoobar)}
+          className="space-y-8"
+        >
           <FormField
             control={form.control}
             name="reasons"
             render={() => (
-              <FormItem className="space-y-8">
-                {/* <div className="mb-4">
+              <FormItem>
+                <div className="mb-4">
                   <FormLabel className="text-base">Sidebar</FormLabel>
                   <FormDescription>
                     Select the items you want to display in the sidebar.
                   </FormDescription>
-                </div> */}
-                {profile.reasons.map((item) => (
+                </div>
+                {(
+                  profile.reasons as Array<{
+                    id: string;
+                    votes: number;
+                    reason: string;
+                  }>
+                ).map((item) => (
                   <FormField
                     key={item.id}
                     control={form.control}
@@ -61,91 +131,25 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
                       return (
                         <FormItem
                           key={item.id}
-                          className="relative flex flex-col lg:flex-row items-start space-x-4 lg:space-x-10 space-y-0 border-b pb-8"
+                          className="flex flex-row items-start space-x-3 space-y-0"
                         >
-                          <div className="mb-6 lg:mb-0 flex items-center border rounded-full px-4 py-2 space-x-3">
-                            <Image
-                              alt="whyawesome logo"
-                              width="32"
-                              height="32"
-                              src="/cute-mushroom.png"
-                              className="shrink grayscale"
-                            />
-                            <p className="text-sm font-semibold">
-                              {item.votes} mushrooms
-                            </p>
-                          </div>
-                          {/* <Badge className="" variant={"outline"}>
-                            {item.votes} votes
-                          </Badge> */}
-                          {/* <FormControl>
-                            <Checkbox
-                              checked={field.value?.includes(item)}
+                          <FormControl>
+                            <Switch
+                              checked={field.value?.includes(item.id)}
                               onCheckedChange={(checked) => {
                                 return checked
                                   ? field.onChange([...field.value, item.id])
                                   : field.onChange(
                                       field.value?.filter(
-                                        (value) => value !== item
+                                        (value) => value !== item.id
                                       )
                                     );
                               }}
                             />
-                          </FormControl> */}
-                          <div className="relative space-y-0.5 shrink-0 flex-1">
-                            <FormLabel className="text-base">
-                              {item.reason}
-                            </FormLabel>
-                            <div className="flex items-center justify-start">
-                              <div className="flex items-center space-x-2 text-sm">
-                                <p className="text-muted-foreground">
-                                  contributed by
-                                </p>
-                                <div className="flex items-center space-x-2 bg-gray-100 py-0 px-1 rounded-sm text-white">
-                                  <Avatar className="w-8 h-8 border border-gray-300 rounded-full overflow-hidden bg-gray-50">
-                                    <AvatarImage
-                                      src="/hyena-head.png"
-                                      alt="@boston"
-                                    />
-                                    <AvatarFallback
-                                      className={`${getHubColor(
-                                        "boston" as
-                                          | "chicago"
-                                          | "boston"
-                                          | "new-york-city"
-                                      )} text-white rounded-full`}
-                                    >
-                                      {"boston"
-                                        .split("-")
-                                        .map((token) => token[0])}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                  <p className="text-muted-foreground pr-1">
-                                    ai-bot-maggie
-                                  </p>
-                                </div>
-                                <p className="text-muted-foreground">
-                                  on 01/21/24
-                                </p>
-                              </div>
-                            </div>
-                          </div>{" "}
-                          <div className="absolute lg:static top-4 right-0">
-                            <FormControl>
-                              <Switch
-                                checked={field.value?.includes(item)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([...field.value, item.id])
-                                    : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value !== item
-                                        )
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                          </div>
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {item.reason}
+                          </FormLabel>
                         </FormItem>
                       );
                     }}
@@ -155,40 +159,7 @@ export default function ProfileForm({ profile }: { profile: Profile }) {
               </FormItem>
             )}
           />
-          {/* 
-          {profile.reasons.map((reason) => {
-            return (
-              <FormField
-                control={form.control}
-                name="reasons"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 space-x-10">
-                    <Image
-                      alt="whyawesome logo"
-                      width="36"
-                      height="36"
-                      src="/cute-mushroom.png"
-                      className="shrink"
-                    />
-                    <div className="space-y-0.5 shrink-0 flex-1">
-                      <FormLabel className="text-base">
-                        Communication emails
-                      </FormLabel>
-                      <FormDescription>
-                        Receive emails about your account activity.
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Switch
-                        checked={!!field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            );
-          })} */}
+          <Button type="submit">Submit</Button>
         </form>
       </Form>
     </>
