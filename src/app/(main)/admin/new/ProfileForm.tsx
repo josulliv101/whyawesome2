@@ -134,9 +134,9 @@ export function ProfileForm({ addProfile, profile }: any) {
   const handleSuggestions = async (open: boolean) => {
     console.log("handleSuggestions", open);
     if (open) {
-      const results = await fetch("/api/suggest?name=" + profile.name).then(
-        (resp) => resp.json()
-      );
+      const results = await fetch(
+        "/api/suggest?name=" + (profile?.name || form.getValues().name)
+      ).then((resp) => resp.json());
       // setSuggestions()
       console.log("results", results);
       if (results.success) {

@@ -62,7 +62,7 @@ export default async function Page({
   await new Promise((r) => setTimeout(r, 0));
 
   const profile: Profile = await fetchProfile(hub);
-  const hubTags = Object.keys(profile.hubTagMap || {}) as TagName[];
+  const hubTags = Object.keys(profile.hubTagMap) as TagName[];
   const hubTagsMap = getHubTagMap(hubTags);
 
   const activeTags = hubTagsMap[tagPrimary as "person" | "place"];

@@ -39,5 +39,18 @@ async function inquireWhyAwesome(name: string) {
   });
   const json = JSON.parse(completion.choices[0].message.content as string);
   console.log("resp.", json);
+  if (!Array.isArray(json) && json.data) {
+    return json.data?.results || json.data?.reasons || json.data;
+  } else if (!Array.isArray(json) && json.results) {
+    return json.results;
+  } else if (!Array.isArray(json) && json.reasons) {
+    return json.reasons;
+  } else if (
+    Array.isArray(json) &&
+    json.length > 0 &&
+    typeof json[0] === "object"
+  ) {
+    return json.map((item) => item.reason || item.result || item.data);
+  }
   return json;
 }

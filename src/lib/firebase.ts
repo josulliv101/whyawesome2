@@ -142,6 +142,14 @@ export async function fetchProfile(profileId: string, uid?: string) {
     description,
     name,
     tagMap = {},
+    hubTagMap = {
+      college: true,
+      comedian: true,
+      museum: true,
+      musician: true,
+      nature: true,
+      sports: true,
+    },
     ...rest
   }: any = profileSnapshot.data() || {};
   return {
@@ -155,6 +163,7 @@ export async function fetchProfile(profileId: string, uid?: string) {
       return b.votes - a.votes;
     }),
     currentUserVotes: currentUserVotes,
+    hubTagMap,
   };
 }
 
@@ -196,7 +205,7 @@ export async function fetchEntities(
     snapshotCount.data().count,
     lastItem,
     firstItem,
-    tags.join(" / "),
+    tags.filter((tag) => tag !== "person" && tag !== "place").join(" / "),
   ] as [Array<Profile>, number, number, number, string];
   return data;
 }

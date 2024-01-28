@@ -283,7 +283,7 @@ export interface Profile {
   reasons: Array<Reason>;
   oinks?: number;
   tags: Array<{ label: string; value: string }>;
-  hubTagMap?: Record<TagName, boolean>;
+  hubTagMap: Record<TagName, boolean>;
   currentUserVotes: {
     voteMap: Record<string, boolean>;
   };
