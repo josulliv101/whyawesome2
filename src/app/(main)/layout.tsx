@@ -48,6 +48,9 @@ import Link from "next/link";
 import { Sidebar } from "@/components/Sidebar";
 import LoginButton from "@/components/LoginButton";
 import { config } from "@/lib/config";
+import Foobar from "@/components/Foobar";
+import { DrillDownNav } from "@/components/DrillDownNav";
+import SmartLink from "@/components/SmartLink";
 
 const defaultLayout = [265, 440, 655];
 
@@ -64,18 +67,24 @@ const defaultLayout = [265, 440, 655];
 //   ],
 // };
 
+export const dynamic = "force-dynamic";
+
 export default function TagsLayout({
   children,
   params: { tags = [] },
 }: PropsWithChildren<{ params: { tags?: string[] } }>) {
-  const [hub = "all", tagPrimary = "person", ...tagsParam] = tags;
+  const [
+    hub = config.rootHub,
+    tagPrimary = config.defaultPrimaryTag,
+    ...tagsParam
+  ] = tags;
 
   console.log("LAYOUT", tags);
   return (
     <div className="">
       <div className="sticky top-0 left-0 z-50 h-[42px] bg-white flex justify-between items-center w-full border-b px-6">
         <div className="flex items-center space-x-2">
-          <Link href="/" className="flex items-center space-x-1.5">
+          <SmartLink hub={`all`} className="flex items-center space-x-1.5">
             {/* <Logo /> */}
             <Image
               alt="whyawesome logo"
@@ -87,7 +96,7 @@ export default function TagsLayout({
             <span className="font-semibold text-sm relative top-[0px] border-l-0 pl-0">
               what&#39;s awesome
             </span>
-          </Link>
+          </SmartLink>
 
           {false && hub && (
             <>
@@ -160,7 +169,21 @@ export default function TagsLayout({
         />
 
         <div className="w-full lg:w-3/4 xl:w-5/6 px-4 py-4 lg:px-12 lg:py-8 ">
-          <div className="">{children}</div>
+          <div className="">
+            <div className="flex items-center mb-12 justify-between space-x-4">
+              <Foobar />
+              <div className="flex items-center space-x-4">
+                {/* <DrillDownNav
+            tags={activeTags}
+            activeTags={tagsToUse}
+            tagPrimary={tagPrimary as "person" | "place"}
+            hub={hub}
+          /> */}
+              </div>
+            </div>
+
+            {children}
+          </div>
         </div>
       </main>
     </div>

@@ -3,4 +3,6 @@ export const config = {
     label: "mushroom",
     path: "/cute-mushroom.png",
   },
+  rootHub: "all",
+  defaultPrimaryTag: "person",
 } as const;

@@ -1,5 +1,6 @@
 "use client";
 
+import { CookiesProvider } from "react-cookie";
 import { useState, createContext, useContext, PropsWithChildren } from "react";
 import { auth } from "@/lib/firebase-client";
 import { User, onAuthStateChanged } from "firebase/auth";
@@ -14,7 +15,11 @@ export function AuthContextProvider({
 
   onAuthStateChanged(auth, (u) => setSession(!!u ? u : null));
 
-  return <Context.Provider value={session}>{children}</Context.Provider>;
+  return (
+    <Context.Provider value={session}>
+      <CookiesProvider>{children}</CookiesProvider>
+    </Context.Provider>
+  );
 }
 
 export function useAuthContext() {

@@ -103,19 +103,13 @@ export default function ProfileForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmitFoobar)}
-          className="space-y-8"
+          className="space-y-8 mt-12"
         >
           <FormField
             control={form.control}
             name="reasons"
             render={() => (
-              <FormItem>
-                <div className="mb-4">
-                  <FormLabel className="text-base">Sidebar</FormLabel>
-                  <FormDescription>
-                    Select the items you want to display in the sidebar.
-                  </FormDescription>
-                </div>
+              <FormItem className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {(
                   profile.reasons as Array<{
                     id: string;
@@ -131,7 +125,7 @@ export default function ProfileForm({
                       return (
                         <FormItem
                           key={item.id}
-                          className="flex flex-row items-start v hover:bg-gray-100 space-x-5 space-y-0 py-2"
+                          className="bg-gray-50 border min-h-44 px-4 py-8 flex flex-row items-start hover:bg-gray-100 space-x-5 space-y-0"
                         >
                           <FormControl className="relative top-1 left-1">
                             <Switch

@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -43,6 +44,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getHubColor } from "@/lib/utils";
 import { config } from "@/lib/config";
 import { ChevronDownIcon, PlusIcon, StarIcon } from "@radix-ui/react-icons";
+import PrimaryTagSelection from "@/components/PrimaryTagSelection";
+import Foobar from "@/components/Foobar";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 const defaultLayout = [265, 440, 655];
 
@@ -56,10 +62,14 @@ function getTruncatedString(str: string, boundary: number = 26) {
 export default async function Page({
   params: { tags = [] },
 }: ServerSideComponentProp<{ tags?: string[] }>) {
-  const [hubState = "all", tagPrimary = "place", ...tagsParam] = tags;
-  const hub = hubState === "index" ? "all" : hubState;
-  const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== "all");
-  await new Promise((r) => setTimeout(r, 0));
+  const primaryTagCookie = cookies().get("primary-tag");
+
+  const [hubState = config.rootHub, tagPrimaryProp, ...tagsParam] = tags;
+  const tagPrimary =
+    tagPrimaryProp || primaryTagCookie?.value || config.defaultPrimaryTag;
+  const hub = hubState === "index" ? config.rootHub : hubState;
+  const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== config.rootHub);
+  await new Promise((r) => setTimeout(r, 600));
 
   const profile: Profile = await fetchProfile(hub);
   const hubTags = Object.keys(profile.hubTagMap) as TagName[];
@@ -80,65 +90,10 @@ export default async function Page({
 
   return (
     <>
-      <div className="flex items-center mb-12 justify-between space-x-4">
-        <Tabs
-          value={tagPrimary ? tagPrimary : "person"}
-          className="h-full space-y-6 "
-        >
-          <div className="space-between flex items-center">
-            <TabsList>
-              <TabsTrigger value="person">
-                <Link href={`/${hub}/person`} className="relative">
-                  People
-                </Link>
-              </TabsTrigger>
-              <TabsTrigger value="place">
-                <Link href={`/${hub}/place`} className="relative">
-                  Places
-                </Link>
-              </TabsTrigger>
-            </TabsList>
-          </div>
-        </Tabs>{" "}
-        <div className="flex items-center space-x-4">
-          <DrillDownNav
-            tags={activeTags}
-            activeTags={tagsToUse}
-            tagPrimary={tagPrimary as "person" | "place"}
-            hub={hub}
-          />
-          {!!hub && hub !== "all" && (
-            <div className="hidden lg:flex items-center border-0 rounded-sm text-muted-foreground text-sm">
-              {/* <div className="relative w-[40px] h-[40px]">
-                <Link href={`/profile/${hub}`} prefetch={false}>
-                  <Avatar className="rounded-sm">
-                    <AvatarImage src={profile.pic} alt={profile.name} />
-                    <AvatarFallback
-                      className={`${getHubColor(
-                        hub as "chicago" | "boston" | "new-york-city"
-                      )} text-white`}
-                    >
-                      {hub.split("-").map((token) => token[0])}
-                    </AvatarFallback>
-                  </Avatar>
-                </Link>
-              </div> */}
-              <div className="px-3 py-0">
-                <Button variant="default" asChild>
-                  <Link href={`/profile/${hub}`} prefetch={false}>
-                    {hub}&#39;s profile
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
       <h2 className="flex items-center text-xl lg:text-4xl font-semibold tracking-tight mb-1">
-        {false && hub && hub !== "all" ? `${hub} / ` : ""} Discover what&#39;s
-        awesome about {tagDefinitionMap[tagPrimary as TagName].plural}{" "}
-        {hub && hub !== "all" ? (
+        {false && hub && hub !== config.rootHub ? `${hub} / ` : ""} Discover
+        {tagPrimary} {tagDefinitionMap[tagPrimary as TagName].plural}{" "}
+        {hub && hub !== config.rootHub ? (
           <span className="pl-2">
             <Link className="" href={`/profile/${hub}`}>
               @{hub}

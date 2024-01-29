@@ -1,4 +1,16 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {}
+const { config } = require("process");
+// const { config } = require("./src/lib/config");
 
-module.exports = nextConfig
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  //   async rewrites() {
+  //     return [
+  //       {
+  //         source: "/",
+  //         destination: `/all/person`,
+  //       },
+  //     ];
+  //   },
+};
+
+module.exports = nextConfig;

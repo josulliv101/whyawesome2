@@ -149,6 +149,7 @@ export async function fetchProfile(profileId: string, uid?: string) {
       musician: true,
       nature: true,
       sports: true,
+      movie: false,
     },
     ...rest
   }: any = profileSnapshot.data() || {};

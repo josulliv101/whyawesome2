@@ -167,9 +167,17 @@ export const tagDefinitionList = [
     id: "place",
     plural: "places",
     private: true,
-    subTags: ["nature", "museum", "bar", "restaurant", "library", "college"],
+    subTags: [
+      "nature",
+      "museum",
+      "bar",
+      "restaurant",
+      "library",
+      "college",
+      "movie",
+    ],
   },
-  { id: "misc", plural: "misc", subTags: ["team", "movie"] },
+  { id: "misc", plural: "misc", subTags: ["team"] },
   {
     id: "movie",
     plural: "movies",
@@ -287,4 +295,9 @@ export interface Profile {
   currentUserVotes: {
     voteMap: Record<string, boolean>;
   };
+}
+
+export interface FilterOption {
+  tag: string;
+  active: boolean;
 }

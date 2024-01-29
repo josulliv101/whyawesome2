@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "./ui/avatar";
+import SmartLink from "./SmartLink";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   hub?: string;
@@ -31,12 +32,12 @@ export function Sidebar({ className, hub, tagPrimary }: SidebarProps) {
               asChild
             >
               <div className="w-full">
-                <Link
+                <SmartLink
                   className="w-full h-[40px] flex items-center"
-                  href={`/boston/${primaryTagSegment}`}
+                  hub={`boston`}
                 >
                   Boston
-                </Link>
+                </SmartLink>
                 <div
                   className={`${getHubColor(
                     "boston"
@@ -50,9 +51,9 @@ export function Sidebar({ className, hub, tagPrimary }: SidebarProps) {
               asChild
             >
               <div className="w-full">
-                <Link className="w-full" href={`/chicago/${primaryTagSegment}`}>
+                <SmartLink className="w-full" hub={`chicago`}>
                   Chicago
-                </Link>
+                </SmartLink>
                 <div
                   className={`${getHubColor(
                     "chicago"
@@ -66,12 +67,9 @@ export function Sidebar({ className, hub, tagPrimary }: SidebarProps) {
               asChild
             >
               <div className="w-full">
-                <Link
-                  className="w-full"
-                  href={`/new-york-city/${primaryTagSegment}`}
-                >
+                <SmartLink className="w-full" hub={`new-york-city`}>
                   New York City
-                </Link>
+                </SmartLink>
                 <div
                   className={`${getHubColor(
                     "new-york-city"
