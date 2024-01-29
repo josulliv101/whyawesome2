@@ -173,12 +173,7 @@ export default function TagsLayout({
             <div className="flex items-center mb-12 justify-between space-x-4">
               <Foobar />
               <div className="flex items-center space-x-4">
-                {/* <DrillDownNav
-            tags={activeTags}
-            activeTags={tagsToUse}
-            tagPrimary={tagPrimary as "person" | "place"}
-            hub={hub}
-          /> */}
+                <DrillDownNav />
               </div>
             </div>
 

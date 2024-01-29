@@ -70,7 +70,7 @@ export default async function Page({
   const hub = hubState === "index" ? config.rootHub : hubState;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== config.rootHub);
   await new Promise((r) => setTimeout(r, 0));
-
+  console.log("fetch profile", hub);
   const profile: Profile = await fetchProfile(hub);
   const hubTags = Object.keys(profile.hubTagMap) as TagName[];
   const hubTagsMap = getHubTagMap(hubTags);
@@ -84,24 +84,22 @@ export default async function Page({
   const tagsToUse = (
     tagsParam.length > 0 ? tagsParam : defaultActiveTags
   ) as TagName[];
+  console.log("fetchinging", ...tagsBase, ...tagsToUse);
   const ps = tagsToUse.map((tag) => fetchEntities(tagsBase.concat(tag), 8));
 
   const fetchedData = await Promise.all(ps);
 
   return (
     <>
-      <h2 className="flex items-center text-xl lg:text-4xl font-semibold tracking-tight mb-1">
+      <h2 className="flex___ items-center text-xl lg:text-4xl font-semibold tracking-tight mb-1">
         {false && hub && hub !== config.rootHub ? `${hub} / ` : ""} Discover
-        {tagPrimary} {tagDefinitionMap[tagPrimary as TagName].plural}{" "}
+        whats awesome about {tagDefinitionMap[tagPrimary as TagName].plural}{" "}
         {hub && hub !== config.rootHub ? (
-          <span className="pl-2">
-            <Link className="" href={`/profile/${hub}`}>
-              @{hub}
-            </Link>
-          </span>
-        ) : (
-          "."
-        )}
+          <Link className="inline pl-2" href={`/profile/${hub}`}>
+            @{hub}
+          </Link>
+        ) : null}
+        {hub && hub !== config.rootHub && "."}
       </h2>
       <p className="text-md lg:text-lg text-muted-foreground mb-12">
         Inclusion in the what&#39;s awesome catalog is by invitation only.

@@ -1,11 +1,17 @@
 "use client";
 
-import { useSelectedLayoutSegment } from "next/navigation";
+import { useParams, useSelectedLayoutSegment } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
-import { TagName, tagDefinitionMap } from "@/lib/types";
+import {
+  TagName,
+  getHubTagMap,
+  hubTagMap,
+  tagDefinitionList,
+  tagDefinitionMap,
+} from "@/lib/types";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -33,6 +39,8 @@ import {
 import { FacetedFilter } from "./FacetedFilter";
 import { useReactTable } from "@tanstack/react-table";
 import { useState } from "react";
+import { useTags } from "./useTags";
+import { config } from "@/lib/config";
 
 export const statuses = [
   {
@@ -63,22 +71,34 @@ export const statuses = [
 ];
 
 interface DrillDownNav extends React.HTMLAttributes<HTMLDivElement> {
-  hub: string;
-  tagPrimary: "person" | "place";
-  tags: TagName[];
-  activeTags: TagName[];
+  // hub: string;
+  // tagPrimary: "person" | "place";
+  // tags: TagName[];
+  // activeTags: TagName[];
 }
 
-export function DrillDownNav({
-  className,
-  tags,
-  activeTags,
-  hub,
-  tagPrimary,
-}: DrillDownNav) {
+export function DrillDownNav({}: // className,
+// tags,
+// activeTags,
+// hub,
+// tagPrimary,
+DrillDownNav) {
+  const { tags: [hub, primaryTag, ...activeTags] = [] } = useParams();
+  const activePrimaryTagDefinition = tagDefinitionList.find(
+    (item) => item.id === (primaryTag || config.defaultPrimaryTag)
+  );
+  const foobar =
+    tagDefinitionMap[(primaryTag || config.defaultPrimaryTag) as TagName];
+  // const subTags = foobar.subTags || [];
+  const subTags = getHubTagMap(
+    Object.keys(hubTagMap as Record<string, boolean>) as TagName[]
+  );
+
+  console.log("drilldown", foobar, hub, primaryTag, activeTags);
+
   const [activeTagPendingCommit, setActiveTags] = useState(activeTags);
   const segment = useSelectedLayoutSegment() || "";
-  const tagPrimaryDefinition = tagDefinitionMap[tagPrimary as TagName];
+  const tagPrimaryDefinition = tagDefinitionMap[primaryTag as TagName];
   const table = useReactTable({
     data: [],
     columns: [],
@@ -101,13 +121,21 @@ export function DrillDownNav({
       <FacetedFilter
         column={table.getColumn("status")}
         title="Categories"
-        activeTags={activeTags}
-        options={tags.map((tag) => ({
+        activeTags={
+          (activeTags.length
+            ? activeTags
+            : Object.keys(hubTagMap).filter(
+                (t: string) => (hubTagMap as any)[t as string] === true
+              )) as TagName[]
+        }
+        options={subTags[
+          (primaryTag || config.defaultPrimaryTag) as "person" | "place"
+        ].map((tag) => ({
           value: tag,
           label: tag,
         }))}
         // onChange={setActiveTags}
-        tagPrimary={tagPrimary}
+        tagPrimary={primaryTag as "person" | "place"}
         hub={hub}
       />
     </>

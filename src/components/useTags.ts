@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 export function useTags(): [string, string, boolean] {
+  const pathname = usePathname();
   const [cookies, setCookie] = useCookies(["primary-tag"]);
   const [latestTags, setLatestTags] = useState<[string, "person" | "place"]>([
     config.rootHub,
@@ -20,6 +21,7 @@ export function useTags(): [string, string, boolean] {
       setCookie("primary-tag", primaryTag, { path: "/" });
     }
   }, [hub, primaryTag]);
-  const isTagsPage = !!hub;
+  const isTagsPage = !!hub || pathname === "/";
+  console.log("isTagsPage", isTagsPage, hub);
   return [...latestTags, isTagsPage];
 }

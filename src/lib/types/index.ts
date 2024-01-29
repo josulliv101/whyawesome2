@@ -272,6 +272,16 @@ export function getHubTagMap(
   );
 }
 
+export const hubTagMap = {
+  college: true,
+  comedian: true,
+  museum: true,
+  musician: true,
+  nature: true,
+  sports: true,
+  movie: false,
+};
+
 export type APIResponse<T = object> =
   | { success: true; data: T }
   | { success: false; error: string };
