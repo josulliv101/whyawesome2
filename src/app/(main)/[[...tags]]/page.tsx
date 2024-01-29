@@ -69,7 +69,7 @@ export default async function Page({
     tagPrimaryProp || primaryTagCookie?.value || config.defaultPrimaryTag;
   const hub = hubState === "index" ? config.rootHub : hubState;
   const tagsBase = [hub, tagPrimary].filter((t) => !!t && t !== config.rootHub);
-  await new Promise((r) => setTimeout(r, 600));
+  await new Promise((r) => setTimeout(r, 0));
 
   const profile: Profile = await fetchProfile(hub);
   const hubTags = Object.keys(profile.hubTagMap) as TagName[];

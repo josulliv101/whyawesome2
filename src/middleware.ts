@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect("http://localhost:3000/all/place");
   } else if (primaryTag?.value) {
     return NextResponse.rewrite(
-      "http://localhost:3000/all/" + primaryTag?.value
+      "https://whatsawesome.vercel.app/all/" + primaryTag?.value
     );
   }
   return NextResponse.next();
